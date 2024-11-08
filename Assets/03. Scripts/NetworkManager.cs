@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 using Photon.Pun;
 using Photon.Realtime;
 using NUnit.Framework;
+using TMPro;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    public TMP_InputField joinRoomName;
+
     List<string> roomNames = new();
     private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private const int nameLength = 8;
@@ -53,8 +55,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedLobby();
         Debug.Log("로비 접속");
-
-        CreateRoom();
     }
 
     public void CreateRoom()
@@ -65,6 +65,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = 7;
 
         PhotonNetwork.CreateRoom(RandomRoomName(), roomOptions, TypedLobby.Default);
+    }
+
+    public void JoinRoom()
+    {
+        PhotonNetwork.JoinRoom(joinRoomName.text);
+        PhotonNetwork.LoadLevel("WaitingRoom");
     }
 
     public override void OnJoinedRoom()
