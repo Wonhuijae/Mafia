@@ -49,18 +49,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         base.OnConnectedToMaster();
         PhotonNetwork.JoinLobby();
+        Debug.Log("Connect");
     }
 
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
-        Debug.Log("�κ� ����");
     }
 
     public void CreateRoom()
     {
-        PhotonNetwork.LoadLevel("WaitingRoom");
-
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 8;
 
@@ -70,13 +68,28 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom(joinRoomName.text);
-        PhotonNetwork.LoadLevel("WaitingRoom");
+        
     }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        Debug.Log(PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("룸 조인");
+
+        if(PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("WaitingRoom");
+        }
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError("방 생성 실패: " + message);
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError("방 참가 실패: " + message);
     }
 
     string RandomRoomName()
