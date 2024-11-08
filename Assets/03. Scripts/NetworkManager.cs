@@ -62,7 +62,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("WaitingRoom");
 
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 7;
+        roomOptions.MaxPlayers = 8;
 
         PhotonNetwork.CreateRoom(RandomRoomName(), roomOptions, TypedLobby.Default);
     }
