@@ -1,4 +1,4 @@
-using Photon.Pun;
+Ôªøusing Photon.Pun;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
-    public float speed = 2f;
+    public float moveSpeed = 2f;
+    public float rotateSpeed = 180f;
     public float gravity = -9.81f;
 
     private CharacterController controller;
@@ -16,26 +17,24 @@ public class PlayerMove : MonoBehaviour
     private void Awake()
     {
         controller = GetComponentInChildren<CharacterController>();
-
-        
     }
 
     private void Update()
     {
-
-        Debug.Log(moveInput);
         if (moveInput != Vector2.zero)
         {
-            // ¿Ãµø
-            Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
-            controller.Move(move * speed * Time.deltaTime);
+            // Ïù¥Îèô
+            Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
+            move = move.normalized;
+            Vector3 moveDirection = /*transform.right * moveInput.x + */transform.forward * moveInput.y;
+            controller.Move(moveDirection * moveSpeed * Time.deltaTime);
 
-            // »∏¿¸
-            Quaternion targetRotation = Quaternion.LookRotation(move);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 0.5f);
+            // ÌöåÏ†Ñ
+            float turn = moveInput.x * Time.deltaTime * rotateSpeed ;
+            transform.Rotate(Vector3.up * turn);
         }
 
-        // ¡ﬂ∑¬
+        // Ï§ëÎ†•
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }

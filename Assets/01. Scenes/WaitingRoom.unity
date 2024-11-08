@@ -597,7 +597,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d4389e784c48d4384ac5eea3244b40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  moveSpeed: 4
+  rotateSpeed: 180
   gravity: -9.81
 --- !u!143 &343343174
 CharacterController:
@@ -1037,7 +1038,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0.5, y: 0.5}
+  Damping: {x: 0, y: 0}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -1061,14 +1062,14 @@ MonoBehaviour:
     ScreenPosition: {x: 0, y: 0}
     DeadZone:
       Enabled: 1
-      Size: {x: 0.23, y: 0.4}
+      Size: {x: 0, y: 0}
     HardLimits:
       Enabled: 1
-      Size: {x: 0.23, y: 0.4}
+      Size: {x: 0.3, y: 0.4}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 3, z: -5}
-  Damping: {x: 0, y: 0, z: 0}
+  Damping: {x: 1, y: 1, z: 1}
   Lookahead:
     Enabled: 1
     Time: 0
