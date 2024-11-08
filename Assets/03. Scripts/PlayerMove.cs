@@ -11,16 +11,25 @@ public class PlayerMove : MonoBehaviour
     public float gravity = -9.81f;
 
     private CharacterController controller;
+    private Animator animator;
     private Vector2 moveInput;
     private Vector3 velocity;
 
     private void Awake()
     {
-        controller = GetComponentInChildren<CharacterController>();
+        controller = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
+        // 움직임 애니메이션
+        float animMoveParam = moveInput.y;
+        animator.SetFloat("Move", animMoveParam);
+
+        float animTurnParam = moveInput.x;
+        animator.SetFloat("Turn", animTurnParam);
+
         if (moveInput != Vector2.zero)
         {
             // 이동
