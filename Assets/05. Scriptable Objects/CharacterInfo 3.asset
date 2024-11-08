@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8291697cf9986b24599bf537c986d08b, type: 3}
+  m_Name: CharacterInfo 3
+  m_EditorClassIdentifier: 
+  charName: Orange
+  charColor: {r: 0.77647066, g: 0.454902, b: 0.17254902, a: 1}
+  charModel: {fileID: 7229224051861892665, guid: a99361aef44af1340abadda0f83ea1a5, type: 3}
