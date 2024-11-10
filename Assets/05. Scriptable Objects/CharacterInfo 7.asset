@@ -15,3 +15,4 @@ MonoBehaviour:
   charName: Yellow
   charColor: {r: 0.9058824, g: 0.9058824, b: 0.41960788, a: 1}
   charModel: {fileID: 1331992821957477266, guid: 785b317a52f134e4bac10bd5769d6103, type: 3}
+  playerIdx: 7

@@ -6,4 +6,5 @@ public class CharacterInfo : ScriptableObject
     public string charName;
     public Color charColor;
     public GameObject charModel;
+    public int playerIdx;
 }

@@ -15,3 +15,4 @@ MonoBehaviour:
   charName: Pink
   charColor: {r: 0.5921569, g: 0.32156864, b: 0.5176471, a: 1}
   charModel: {fileID: 7734895144133141023, guid: ba2313d3f3aefee45acb4e6976ca7a23, type: 3}
+  playerIdx: 4

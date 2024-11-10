@@ -1,22 +1,27 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 using Photon.Pun;
 using Photon.Realtime;
 using NUnit.Framework;
 using TMPro;
+using System.Collections;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public TMP_InputField joinRoomName;
+    public static event Action OnJoinRoom;
 
     List<string> roomNames = new();
     private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private const int nameLength = 8;
 
-    private NetworkManager m_instance;
-    public NetworkManager Instance
+    private const int totalChars = 8;
+
+    private static NetworkManager m_instance;
+    public static NetworkManager Instance
     {
         get
         {
@@ -68,18 +73,46 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom(joinRoomName.text);
-        
     }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        Debug.Log("룸 조인");
 
-        if(PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.LoadLevel("WaitingRoom");
+        if (PhotonNetwork.IsMasterClient)
+        { 
+            bool[] selectedChars = new bool[totalChars];
+
+            for (int i = 0; i < totalChars; i++)
+            {
+                selectedChars[i] = false;
+            }
+
+            Hashtable roomProperties = new Hashtable();
+            roomProperties["selectedChars"] = selectedChars;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+
+            StartCoroutine(WaitForPropSet());
         }
+
+        StartCoroutine(WaitRoutine());
+    }
+
+    IEnumerator WaitRoutine()
+    {
+        while (OnJoinRoom == null) 
+        {
+            yield return null;
+        }
+
+        OnJoinRoom?.Invoke();
+    }
+
+    IEnumerator WaitForPropSet()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        PhotonNetwork.LoadLevel("WaitingRoom");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
