@@ -266,6 +266,8 @@ MonoBehaviour:
   observableSearch: 1
   ObservedComponents:
   - {fileID: 4331224909527563425}
+  - {fileID: 8501193655682595365}
+  - {fileID: 3544948827919915398}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -277,6 +279,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3838883727421365720}
     m_Modifications:
+    - target: {fileID: -140569243044780390, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+      propertyPath: m_SynchronizeLayers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -140569243044780390, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988965180412252039, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6107260803389495816, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
       propertyPath: m_Name
       value: Astrounalt_Black Variant
@@ -326,6 +340,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+--- !u!114 &3544948827919915398 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4234764358621660473, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+  m_PrefabInstance: {fileID: 862113400824241343}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6861109537647691447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6087844602675026957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6884466692760715442, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
@@ -336,3 +361,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6107260803389495816, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
   m_PrefabInstance: {fileID: 862113400824241343}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8501193655682595365 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -140569243044780390, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+  m_PrefabInstance: {fileID: 862113400824241343}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6861109537647691447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -38,6 +38,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (Instance != this) Destroy(gameObject);
 
         DontDestroyOnLoad(this);
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     private void Start()
@@ -110,7 +112,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitForPropSet()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         PhotonNetwork.LoadLevel("WaitingRoom");
     }
