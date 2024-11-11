@@ -64,6 +64,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
     }
 
+    // 방 이름 생성
     public void CreateRoom()
     {
         RoomOptions roomOptions = new RoomOptions();
@@ -72,6 +73,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(RandomRoomName(), roomOptions, TypedLobby.Default);
     }
 
+    // 방 이름으로 참가
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom(joinRoomName.text);
@@ -127,6 +129,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.LogError("방 참가 실패: " + message);
     }
 
+    // 알파벳 대소문자, 숫자 중 랜덤 8자리
     string RandomRoomName()
     {
         string roomNameString = string.Empty;

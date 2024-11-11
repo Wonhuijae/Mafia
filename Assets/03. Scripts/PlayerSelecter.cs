@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System;
 
 public class PlayerSelecter : MonoBehaviourPunCallbacks
 {
@@ -15,6 +16,8 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     private GameObject[] characterButtons;
 
     public Dictionary<CharacterInfo, GameObject> spawnDict = new();
+
+    public static event Action<CharacterInfo> OnChangeCharacter;
 
     public Transform defaultSpawnPos;
     public Transform previewPos;
@@ -37,6 +40,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         NetworkManager.OnJoinRoom += PlayerInit;
     }
 
+    // 최초 캐릭터 설정
     public void PlayerInit()
     {
         CheckCharacter();
@@ -44,6 +48,8 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         SpawnPlayer(charIdx);
     }
 
+    // 캐릭터가 이미 생성되어 있는지 확인
+    // 다른 플레이어에게 선점되어 있다면 사용할 수 없도록 함
     private void CheckCharacter()
     {
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
@@ -74,6 +80,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         var player = PhotonNetwork.Instantiate("Player" + selectIdx, spawnPos, Quaternion.identity);
     }
 
+    // 캐릭터 선택
     public void SelectCharacter(CharacterInfo _characterInfo)
     {
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
@@ -84,8 +91,12 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
 
         selectInfo = _characterInfo;
         spawnDict[_characterInfo].SetActive(true);
+
+        // 캐릭터 모델 바꾸기
+        OnChangeCharacter(selectInfo);
     }
 
+    // 프로퍼티 값이 바뀌면 UI 업데이트
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         if (propertiesThatChanged.ContainsKey("selectedChars"))
@@ -94,7 +105,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         }
     }
 
-    // 버튼 수정
+    // 캐릭터 선택 UI 수정
     void UpdateSelectView()
     {
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("selectedChars", out object selectedCharsObj))
@@ -108,6 +119,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         }
     }
 
+    // 현재 사용자가 선택한 버튼에 Outline
     public void SetButton(Outline _outline)
     {
         if (outline != null) outline.enabled = false;

@@ -27,7 +27,7 @@ public class PlayerMove : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponentInChildren<Animator>();
+        
         photonView = GetComponent<PhotonView>();
 
         // 플레이어가 네트워크에 참여했을 때, 자신만의 카메라를 설정
@@ -51,7 +51,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && animator != null)
         {
             // 움직임 애니메이션
             float animMoveParam = moveInput.y;
@@ -62,12 +62,10 @@ public class PlayerMove : MonoBehaviour
 
             if (moveInput != Vector2.zero)
             {
-                Debug.Log("PhotonAnimatorView is being observed: " + photonView.IsMine);
-
                 // 이동
                 Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
                 move = move.normalized;
-                Vector3 moveDirection = /*transform.right * moveInput.x + */transform.forward * moveInput.y;
+                Vector3 moveDirection = transform.forward * moveInput.y;
                 controller.Move(moveDirection * moveSpeed * Time.deltaTime);
 
                 // 회전
@@ -84,5 +82,10 @@ public class PlayerMove : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+    }
+
+    public void SetAnimator()
+    {
+        animator = GetComponentInChildren<Animator>();
     }
 }
