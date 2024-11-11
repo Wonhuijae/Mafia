@@ -17,7 +17,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
 
     public Dictionary<CharacterInfo, GameObject> spawnDict = new();
 
-    public static event Action<CharacterInfo> OnChangeCharacter;
+    public static event Action<string> OnChangeCharacter;
 
     public Transform defaultSpawnPos;
     public Transform previewPos;
@@ -93,7 +93,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         spawnDict[_characterInfo].SetActive(true);
 
         // 캐릭터 모델 바꾸기
-        OnChangeCharacter(selectInfo);
+        OnChangeCharacter(selectInfo.charModel.name);
     }
 
     // 프로퍼티 값이 바뀌면 UI 업데이트

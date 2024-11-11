@@ -174,7 +174,6 @@ MonoBehaviour:
   rotateSpeed: 180
   gravity: -9.81
   cameraPos: {fileID: 5688747821503740374}
-  playerModel: {fileID: 4939355349359514898}
 --- !u!143 &5948002909862493326
 CharacterController:
   m_ObjectHideFlags: 0

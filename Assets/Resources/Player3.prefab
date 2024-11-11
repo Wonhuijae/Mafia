@@ -174,7 +174,6 @@ MonoBehaviour:
   rotateSpeed: 180
   gravity: -9.81
   cameraPos: {fileID: 5092307141708126957}
-  playerModel: {fileID: 5551112255761970976}
 --- !u!143 &9198556373097481115
 CharacterController:
   m_ObjectHideFlags: 0
@@ -237,7 +236,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 940998047007605590}
   - {fileID: 6086601947025254662}
-  - {fileID: 1814511234446611304}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -341,25 +340,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a99361aef44af1340abadda0f83ea1a5, type: 3}
---- !u!114 &1814511234446611304 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3491608628020316785, guid: a99361aef44af1340abadda0f83ea1a5, type: 3}
-  m_PrefabInstance: {fileID: 2979940216324905241}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5551112255761970976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &5062700753688341914 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8005302636603536515, guid: a99361aef44af1340abadda0f83ea1a5, type: 3}
-  m_PrefabInstance: {fileID: 2979940216324905241}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5551112255761970976 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7229224051861892665, guid: a99361aef44af1340abadda0f83ea1a5, type: 3}
   m_PrefabInstance: {fileID: 2979940216324905241}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &6086601947025254662 stripped
@@ -367,7 +350,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9019913931511459871, guid: a99361aef44af1340abadda0f83ea1a5, type: 3}
   m_PrefabInstance: {fileID: 2979940216324905241}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5551112255761970976}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}

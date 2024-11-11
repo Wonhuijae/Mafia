@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -21,36 +22,23 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField]
     private GameObject cameraPos;
-    [SerializeField]
+
     private GameObject playerModel;
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        
         photonView = GetComponent<PhotonView>();
 
-        // 플레이어가 네트워크에 참여했을 때, 자신만의 카메라를 설정
-        if (photonView.IsMine)
-        {
-            // Cinemachine 카메라 가져오기
-            cineCam = FindAnyObjectByType<CinemachineCamera>();
+        SetAnimator();
+        playerModel = animator.gameObject;
 
-            // 카메라가 따라갈 대상 설정 (자신의 모델을 따라가도록)
-            cineCam.Follow = playerModel.transform;
-
-            // 카메라가 바라볼 대상 설정 (자신의 모델을 바라보도록)
-            cineCam.LookAt = playerModel.transform;
-        }
-        else
-        {
-            // 다른 플레이어의 카메라는 설정하지 않음 (자동으로 다른 플레이어의 카메라를 사용)
-            if (cineCam != null) Destroy(cineCam.gameObject); // 다른 플레이어의 카메라는 없애버림
-        }
+        SetCameraTarget(playerModel);
     }
 
     private void Update()
     {
+        if (animator == null) SetAnimator();
         if (photonView.IsMine && animator != null)
         {
             // 움직임 애니메이션
@@ -87,5 +75,28 @@ public class PlayerMove : MonoBehaviour
     public void SetAnimator()
     {
         animator = GetComponentInChildren<Animator>();
+        // 포톤뷰 동기화
+        GetComponent<PhotonView>().FindObservables();
+    }
+
+    public void SetCameraTarget(GameObject _target)
+    {
+        playerModel = _target;
+
+        // 플레이어가 네트워크에 참여했을 때, 자신만의 카메라를 설정
+        if (photonView.IsMine)
+        {
+            // Cinemachine 카메라 가져오기
+            cineCam = FindAnyObjectByType<CinemachineCamera>();
+
+            // 카메라가 추적 대상 설정
+            cineCam.Follow = playerModel.transform;
+            cineCam.LookAt = playerModel.transform;
+        }
+        else
+        {
+            // 다른 플레이어의 카메라는 설정하지 않음 (자동으로 다른 플레이어의 카메라를 사용)
+            if (cineCam != null) Destroy(cineCam.gameObject); // 다른 플레이어의 카메라는 없애버림
+        }
     }
 }

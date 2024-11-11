@@ -98,7 +98,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
             StartCoroutine(WaitForPropSet());
         }
-
         StartCoroutine(WaitRoutine());
     }
 
