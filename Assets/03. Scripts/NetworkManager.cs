@@ -8,6 +8,7 @@ using Photon.Realtime;
 using NUnit.Framework;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -45,6 +46,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         ServerConnect();
+        SceneManager.sceneLoaded += OnSceneLoadingComplete;
     }
 
     public void ServerConnect()
@@ -64,7 +66,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
     }
 
-    // 방 이름 생성
+    // 방 생성
     public void CreateRoom()
     {
         RoomOptions roomOptions = new RoomOptions();
@@ -96,13 +98,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             roomProperties["selectedChars"] = selectedChars;
             PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
 
+            PhotonNetwork.CurrentRoom.SetCustomProperties
+                (new Hashtable { { "CurrentScene", SceneManager.GetActiveScene().name } });
+
             StartCoroutine(WaitForPropSet());
         }
+        else
+        {
+            StartCoroutine(CheckSceneSyncWithMaster()) ;
+        }
+        
         StartCoroutine(WaitRoutine());
     }
 
+    // 캐릭터 초기화
     IEnumerator WaitRoutine()
     {
+        // 이벤트 리스너가 없으면 대기
         while (OnJoinRoom == null) 
         {
             yield return null;
@@ -111,11 +123,36 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         OnJoinRoom?.Invoke();
     }
 
+    // 프로퍼티 세팅 대기한 후 씬 로드
     IEnumerator WaitForPropSet()
     {
         yield return new WaitForSeconds(1f);
 
         PhotonNetwork.LoadLevel("WaitingRoom");
+
+        StartCoroutine(CheckSceneSyncWithMaster());
+
+        Debug.Log("Scene Sync Completed - Master Client");
+    }
+
+    // 씬 동기화 대기
+    IEnumerator CheckSceneSyncWithMaster()
+    {
+        while (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("SceneSynced") ||
+           (bool)PhotonNetwork.CurrentRoom.CustomProperties["SceneSynced"] == false)
+        {
+            yield return null;
+        }
+    }
+
+    private void OnSceneLoadingComplete(Scene scene, LoadSceneMode mode)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // 씬 로드 완료
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { "SceneSynced", true } });
+            Debug.Log("Scene Loaded and Synced - Master Client");
+        }
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

@@ -43,8 +43,11 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     // 최초 캐릭터 설정
     public void PlayerInit()
     {
+        // 중복 체크
         CheckCharacter();
+        // 캐릭터 선점
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "charIdx", charIdx } });
+        // 스폰
         SpawnPlayer(charIdx);
     }
 
