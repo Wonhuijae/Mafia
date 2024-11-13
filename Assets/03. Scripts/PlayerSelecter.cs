@@ -32,6 +32,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         foreach (CharacterInfo info in infoes)
         {
             spawnDict.Add(info, Instantiate(info.charModel, previewPos.position, Quaternion.identity));
+            Destroy(spawnDict[info].GetComponentInChildren<PhotonAnimatorView>());
             spawnDict[info].SetActive(false);
         }
 
