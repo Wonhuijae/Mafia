@@ -1,6 +1,7 @@
 ﻿using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Pun;
 using UnityEngine;
+using static Photon.Pun.PhotonAnimatorView;
 
 public class PlayerChange : MonoBehaviourPunCallbacks
 {
@@ -30,7 +31,12 @@ public class PlayerChange : MonoBehaviourPunCallbacks
         // 기존 모델 제거
         if (GetComponentInChildren<Animator>() != null)
         {
-            Destroy(GetComponentInChildren<Animator>().gameObject);
+            GameObject oldModel = GetComponentInChildren<Animator>().gameObject;
+
+            PhotonAnimatorView oldAnimView = oldModel.GetComponent<PhotonAnimatorView>();
+            if (oldAnimView != null) Destroy(oldAnimView);
+
+            Destroy(oldModel);
         }
 
         // 새 모델 생성해서 플레이어 하위에 둠
@@ -39,8 +45,16 @@ public class PlayerChange : MonoBehaviourPunCallbacks
         newModel.transform.localPosition = Vector3.zero;
         newModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-        // 애니메이터, 카메라(로컬에서만) 재설정
-        pv.RPC("SetAnimator", RpcTarget.All);
+        // PhotonView에 새로운 컴포넌트들 등록
+        pv.ObservedComponents.Clear();  // 기존 컴포넌트 제거
+
+        // 필요한 컴포넌트들 추가
+        pv.ObservedComponents.Add(newModel.GetComponent<PhotonAnimatorView>());
+        pv.ObservedComponents.Add(GetComponent<PhotonTransformView>());
+
+        // 애니메이터 재설정
+        pv.RPC("SetAnimator", RpcTarget.AllBuffered);
+        // 로컬 카메라 재설정
         if (pv.IsMine) SetCameraTarget(newModel);
     }
 

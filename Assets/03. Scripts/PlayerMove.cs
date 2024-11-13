@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Photon.Pun.PhotonAnimatorView;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -74,15 +75,22 @@ public class PlayerMove : MonoBehaviour
 
     public void SetAnimator()
     {
-        Debug.Log(gameObject.name + " : PlayerMove.SetAnimator");
-        animator = GetComponentInChildren<Animator>();     
+        animator = GetComponentInChildren<Animator>();
+        photonView.RefreshRpcMonoBehaviourCache();
+
+        //if (!photonView.IsMine)
+        //{
+        //    Debug.Log("PhotonView Is Not Mine :" + (photonView == animator.GetComponent<PhotonAnimatorView>().photonView));
+
+        //}
+        //else Debug.Log("PhotonView Is Mine" + (photonView == animator.GetComponent<PhotonAnimatorView>().photonView));
     }
 
     public void SetCameraTarget(GameObject _target)
     {
         playerModel = _target;
 
-        // 플레이어가 네트워크에 참여했을 때, 자신만의 카메라를 설정
+        // 플레이어가 카메라 설정
         if (photonView.IsMine)
         {
             // Cinemachine 카메라 가져오기
