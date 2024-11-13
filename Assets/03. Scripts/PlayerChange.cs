@@ -57,13 +57,13 @@ public class PlayerChange : MonoBehaviourPunCallbacks
         // 로컬 카메라 재설정
         if (pv.IsMine) SetCameraTarget(newModel);
     }
-
+    
     [PunRPC]
     void SetAnimator()
     {
         GetComponent<PlayerMove>().SetAnimator();
     }
-
+    
     void SetCameraTarget(GameObject _model)
     {
         GetComponent<PlayerMove>().SetCameraTarget(_model);

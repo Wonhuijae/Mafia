@@ -31,7 +31,7 @@ public class PlayerMove : MonoBehaviour
         controller = GetComponent<CharacterController>();
         photonView = GetComponent<PhotonView>();
 
-        SetAnimator();
+        animator = GetComponentInChildren<Animator>();
         playerModel = animator.gameObject;
 
         SetCameraTarget(playerModel);
@@ -75,22 +75,20 @@ public class PlayerMove : MonoBehaviour
 
     public void SetAnimator()
     {
+        Debug.Log("Call PlayerMove.SetAnimator()");
         animator = GetComponentInChildren<Animator>();
-        photonView.RefreshRpcMonoBehaviourCache();
-
-        //if (!photonView.IsMine)
-        //{
-        //    Debug.Log("PhotonView Is Not Mine :" + (photonView == animator.GetComponent<PhotonAnimatorView>().photonView));
-
-        //}
-        //else Debug.Log("PhotonView Is Mine" + (photonView == animator.GetComponent<PhotonAnimatorView>().photonView));
+        if (animator.transform.gameObject.GetComponent<PhotonAnimatorView>().photonView == null) 
+        {
+            Debug.Log(gameObject.name + " : " + GetComponent<PhotonAnimatorView>().photonView == null);
+            PhotonView.Get(animator.gameObject);
+        }
     }
 
     public void SetCameraTarget(GameObject _target)
     {
         playerModel = _target;
 
-        // 플레이어가 카메라 설정
+        // 플레이어 카메라 설정
         if (photonView.IsMine)
         {
             // Cinemachine 카메라 가져오기

@@ -131,8 +131,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("WaitingRoom");
 
         StartCoroutine(CheckSceneSyncWithMaster());
-
-        Debug.Log("Scene Sync Completed - Master Client");
     }
 
     // 씬 동기화 대기
@@ -151,18 +149,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             // 씬 로드 완료
             PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { "SceneSynced", true } });
-            Debug.Log("Scene Loaded and Synced - Master Client");
         }
-    }
-
-    public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        Debug.LogError("방 생성 실패: " + message);
-    }
-
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        Debug.LogError("방 참가 실패: " + message);
     }
 
     // 알파벳 대소문자, 숫자 중 랜덤 8자리

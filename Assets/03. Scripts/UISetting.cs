@@ -16,7 +16,6 @@ public class UISetting : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        Debug.Log(PhotonNetwork.CurrentRoom.Name);
         roomName.text = PhotonNetwork.CurrentRoom.Name;
     }
 
@@ -48,7 +47,6 @@ public class UISetting : MonoBehaviourPunCallbacks
             if (nick == "") nick = "player" + i;
 
             playerName[i].text = nick;
-            Debug.Log(nick);
         }
     }
 }

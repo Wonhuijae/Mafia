@@ -60,7 +60,6 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < selectedChars.Length; i++)
         {
-            Debug.Log(selectedChars[i]);
             if (!selectedChars[i])
             {
                 charIdx = i;
