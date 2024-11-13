@@ -39,7 +39,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        if (animator == null) SetAnimator();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
+
         if (photonView.IsMine && animator != null)
         {
             // 움직임 애니메이션
@@ -71,17 +72,6 @@ public class PlayerMove : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-    }
-
-    public void SetAnimator()
-    {
-        Debug.Log("Call PlayerMove.SetAnimator()");
-        animator = GetComponentInChildren<Animator>();
-        if (animator.transform.gameObject.GetComponent<PhotonAnimatorView>().photonView == null) 
-        {
-            Debug.Log(gameObject.name + " : " + GetComponent<PhotonAnimatorView>().photonView == null);
-            PhotonView.Get(animator.gameObject);
-        }
     }
 
     public void SetCameraTarget(GameObject _target)

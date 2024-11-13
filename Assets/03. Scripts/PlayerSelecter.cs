@@ -11,8 +11,6 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     [SerializeField]
     private List<CharacterInfo> infoes;
     [SerializeField]
-    private GameObject checkedImage;
-    [SerializeField]
     private GameObject[] characterButtons;
 
     public Dictionary<CharacterInfo, GameObject> spawnDict = new();
@@ -95,7 +93,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         spawnDict[_characterInfo].SetActive(true);
 
         // 캐릭터 모델 바꾸기
-        OnChangeCharacter(selectInfo.charModel.name);
+        OnChangeCharacter(selectInfo.charName);
     }
 
     // 프로퍼티 값이 바뀌면 UI 업데이트
