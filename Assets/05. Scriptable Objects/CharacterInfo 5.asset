@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Red
   charColor: {r: 0.5921569, g: 0.0627451, b: 0.0627451, a: 1}
-  charModel: {fileID: 1175974366091629814, guid: 7c0b0634fadf63b49ab501d14e542ab4, type: 3}
+  charModel: {fileID: 1175974366091629814, guid: b7f6e3c869d07e64e9ce8c38d48d20ae, type: 3}
   playerIdx: 5

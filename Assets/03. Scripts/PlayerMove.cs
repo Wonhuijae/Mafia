@@ -74,9 +74,8 @@ public class PlayerMove : MonoBehaviour
 
     public void SetAnimator()
     {
-        animator = GetComponentInChildren<Animator>();
-        // 포톤뷰 동기화
-        GetComponent<PhotonView>().FindObservables();
+        Debug.Log(gameObject.name + " : PlayerMove.SetAnimator");
+        animator = GetComponentInChildren<Animator>();     
     }
 
     public void SetCameraTarget(GameObject _target)

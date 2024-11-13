@@ -1,4 +1,4 @@
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+ï»¿using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Pun;
 using UnityEngine;
 
@@ -15,43 +15,36 @@ public class PlayerChange : MonoBehaviourPunCallbacks
         PlayerSelecter.OnChangeCharacter += RequestModelChange;
     }
 
-    // ¸ğµç Å¬¶ó¿¡ ¸ğµ¨ º¯°æ Àû¿ë
-    [PunRPC]
-    public void RPCChangeModel(string _name)
-    {
-        if (pv.IsMine)
-        {
-            ChangeModel(_name);
-        }
-    }
-
-    // ¸ğµ¨ º¯°æ ¿äÃ»
+    // ëª¨ë¸ ë³€ê²½ ìš”ì²­
     public void RequestModelChange(string _name)
     {
-        if (pv.IsMine) pv.RPC("RPCChangeModel", RpcTarget.AllBuffered, _name);
+        if (pv.IsMine) pv.RPC("ChangeModel", RpcTarget.AllBuffered, _name);
     }
-    
-    // ·ÎÄÃ Å¬¶óÀÌ¾ğÆ® ¸ğµ¨ º¯°æ
+
+    [PunRPC]
+    // ë¡œì»¬ í´ë¼ì´ì–¸íŠ¸ ëª¨ë¸ ë³€ê²½
     void ChangeModel(string _name)
     {
-        if(pv != null)
+        GameObject player = pv.gameObject;
+
+        // ê¸°ì¡´ ëª¨ë¸ ì œê±°
+        if (GetComponentInChildren<Animator>() != null)
         {
-            GameObject player = pv.gameObject;
-
-            Destroy(pv.GetComponentInChildren<Animator>().gameObject);
-
-            // »õ ¸ğµ¨ »ı¼ºÇØ¼­ ÇÃ·¹ÀÌ¾î ÇÏÀ§¿¡ µÒ
-            GameObject newModel = Instantiate(Resources.Load<GameObject>(_name), transform.position, transform.rotation);
-            newModel.transform.SetParent(player.transform, false);
-            newModel.transform.localPosition = Vector3.zero;
-            newModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
-
-            // ¾Ö´Ï¸ŞÀÌÅÍ, Ä«¸Ş¶ó Àç¼³Á¤
-            SetAnimator();
-            SetCameraTarget(newModel);
+            Destroy(GetComponentInChildren<Animator>().gameObject);
         }
+
+        // ìƒˆ ëª¨ë¸ ìƒì„±í•´ì„œ í”Œë ˆì´ì–´ í•˜ìœ„ì— ë‘ 
+        GameObject newModel = Instantiate(Resources.Load<GameObject>(_name), transform.position, transform.rotation);
+        newModel.transform.SetParent(player.transform, false);
+        newModel.transform.localPosition = Vector3.zero;
+        newModel.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+        // ì• ë‹ˆë©”ì´í„°, ì¹´ë©”ë¼(ë¡œì»¬ì—ì„œë§Œ) ì¬ì„¤ì •
+        pv.RPC("SetAnimator", RpcTarget.All);
+        if (pv.IsMine) SetCameraTarget(newModel);
     }
 
+    [PunRPC]
     void SetAnimator()
     {
         GetComponent<PlayerMove>().SetAnimator();

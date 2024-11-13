@@ -15,3 +15,4 @@ MonoBehaviour:
   charName: Black
   charColor: {r: 0.22352943, g: 0.25490198, b: 0.2784314, a: 1}
   charModel: {fileID: 6107260803389495816, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+  playerIdx: 0

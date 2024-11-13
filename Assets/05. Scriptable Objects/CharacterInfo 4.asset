@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charName: Pink
   charColor: {r: 0.5921569, g: 0.32156864, b: 0.5176471, a: 1}
-  charModel: {fileID: 7734895144133141023, guid: ba2313d3f3aefee45acb4e6976ca7a23, type: 3}
+  charModel: {fileID: 7734895144133141023, guid: 6f8b42306a724764ba0ea62e8d460420, type: 3}
   playerIdx: 4
