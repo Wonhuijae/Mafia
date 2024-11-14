@@ -38,6 +38,9 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         SetCameraTarget(playerModel);
 
         GetComponent<PlayerInput>().enabled = false;
+
+        UISetting.OnInputTextStart += (() => GetComponent<PlayerInput>().enabled = false);
+        UISetting.OnInputTextEnd += (() => GetComponent<PlayerInput>().enabled = true);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

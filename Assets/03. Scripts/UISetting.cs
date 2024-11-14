@@ -7,14 +7,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun.UtilityScripts;
+using System;
 
 public class UISetting : MonoBehaviourPunCallbacks
 {
     public TextMeshProUGUI roomName;
     public TMP_InputField inputPlayerNickname;
+    public TMP_InputField updatePlayerNickname;
 
     public TextMeshProUGUI[] playerName;
     public Toggle[] playerReady;
+
+    public static event Action OnInputTextStart;
+    public static event Action OnInputTextEnd;
 
     private string keyNameIsReady = "isReady";
 
@@ -26,6 +31,7 @@ public class UISetting : MonoBehaviourPunCallbacks
     private void Start()
     {
         roomName.text = PhotonNetwork.CurrentRoom.Name;
+        updatePlayerNickname.onEndEdit.AddListener(ChangeNickName);
     }
 
     public void CopyRoomName()
@@ -98,6 +104,7 @@ public class UISetting : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.Add(keyNameIsReady, false);
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
+        updatePlayerNickname.text = PhotonNetwork.LocalPlayer.NickName;
         UpdatePlayerList();
     }
 
@@ -114,5 +121,21 @@ public class UISetting : MonoBehaviourPunCallbacks
         // 동기화
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerReady);
         Debug.Log(playerReady[keyNameIsReady]);
+    }
+
+    public void ChangeNickName(string name)
+    {
+        Debug.Log(name);
+        PhotonNetwork.LocalPlayer.NickName = name;
+    }
+
+    public void InputStart(string _textInput)
+    {
+        if (OnInputTextStart != null) OnInputTextStart();
+    }
+
+    public void InputEnd(string _textInput)
+    {
+        if (OnInputTextEnd != null) OnInputTextEnd();
     }
 }

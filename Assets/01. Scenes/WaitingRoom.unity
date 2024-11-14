@@ -894,7 +894,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.0002746582}
+  m_AnchoredPosition: {x: 0, y: -0.00015258789}
   m_SizeDelta: {x: 784, y: 832}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &82856959
@@ -3463,6 +3463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomName: {fileID: 1323448445}
   inputPlayerNickname: {fileID: 1958776571}
+  updatePlayerNickname: {fileID: 1177803010}
   playerName:
   - {fileID: 1306055206}
   - {fileID: 777703966}
@@ -5399,7 +5400,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 877907548}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999803
+  m_Size: 0.9999982
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8122,7 +8123,7 @@ GameObject:
   - component: {fileID: 1177803011}
   - component: {fileID: 1177803010}
   m_Layer: 5
-  m_Name: InputField (TMP)
+  m_Name: InputField_UpdateName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8215,10 +8216,34 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 563138223}
+        m_TargetAssemblyTypeName: UISetting, Assembly-CSharp
+        m_MethodName: InputStart
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnDeselect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 563138223}
+        m_TargetAssemblyTypeName: UISetting, Assembly-CSharp
+        m_MethodName: InputEnd
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTextSelection:
     m_PersistentCalls:
       m_Calls: []
