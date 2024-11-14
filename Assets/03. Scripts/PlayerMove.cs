@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
 using Photon.Realtime;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static Photon.Pun.PhotonAnimatorView;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : MonoBehaviourPunCallbacks
 {
     public CinemachineCamera cineCam;
 
@@ -15,7 +16,7 @@ public class PlayerMove : MonoBehaviour
     public float rotateSpeed = 180f;
     public float gravity = -9.81f;
 
-    private PhotonView photonView;
+    private PhotonView myPhotonView;
     private CharacterController controller;
     private Animator animator;
     private Vector2 moveInput;
@@ -29,19 +30,31 @@ public class PlayerMove : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        photonView = GetComponent<PhotonView>();
+        myPhotonView = GetComponent<PhotonView>();
 
         animator = GetComponentInChildren<Animator>();
         playerModel = animator.gameObject;
 
         SetCameraTarget(playerModel);
+
+        GetComponent<PlayerInput>().enabled = false;
     }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
+        if(targetPlayer == PhotonNetwork.LocalPlayer && PhotonNetwork.LocalPlayer.NickName != "")
+        {
+            GetComponent<PlayerInput>().enabled = true;
+        }
+    }
+
 
     private void Update()
     {
         if (animator == null) animator = GetComponentInChildren<Animator>();
 
-        if (photonView.IsMine && animator != null)
+        if (myPhotonView.IsMine && animator != null)
         {
             // 움직임 애니메이션
             float animMoveParam = moveInput.y;
@@ -79,7 +92,7 @@ public class PlayerMove : MonoBehaviour
         playerModel = _target;
 
         // 플레이어 카메라 설정
-        if (photonView.IsMine)
+        if (myPhotonView.IsMine)
         {
             // Cinemachine 카메라 가져오기
             cineCam = FindAnyObjectByType<CinemachineCamera>();

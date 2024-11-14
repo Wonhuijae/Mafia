@@ -18,6 +18,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     List<string> roomNames = new();
     private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private const int nameLength = 8;
+    private const string keyNameSelectedChars = "selectedChars";
 
     private const int totalChars = 8;
 
@@ -95,11 +96,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
 
             Hashtable roomProperties = new Hashtable();
-            roomProperties["selectedChars"] = selectedChars;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+            roomProperties[keyNameSelectedChars] = selectedChars;
+            roomProperties["CurrentScene"] = SceneManager.GetActiveScene().name;
 
-            PhotonNetwork.CurrentRoom.SetCustomProperties
-                (new Hashtable { { "CurrentScene", SceneManager.GetActiveScene().name } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
 
             StartCoroutine(WaitForPropSet());
         }
