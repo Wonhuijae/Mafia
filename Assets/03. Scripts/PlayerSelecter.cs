@@ -46,7 +46,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         // 중복 체크
         CheckCharacter();
         // 캐릭터 선점
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "charIdx", charIdx } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { PropertyKeyName.keyCharIdx, charIdx } });
         // 스폰
         SpawnPlayer(charIdx);
     }
@@ -56,7 +56,8 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     private void CheckCharacter()
     {
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-        bool[] selectedChars = (bool[])roomProperties["selectedChars"];
+        string keyName = PropertyKeyName.keySelectedChars;
+        bool[] selectedChars = (bool[])roomProperties[keyName];
 
         for (int i = 0; i < selectedChars.Length; i++)
         {
@@ -65,7 +66,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
                 charIdx = i;
                 curIdx = i;
                 selectedChars[i] = true;
-                roomProperties["selectedChars"] = selectedChars;
+                roomProperties[keyName] = selectedChars;
 
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                 break;
@@ -83,7 +84,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         var player = PhotonNetwork.Instantiate("Player" + selectIdx, spawnPos, Quaternion.identity);
         float[] nickColor = new float[4];
         nickColor = ColorToFloat(infoes[selectIdx].charColor);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "NickColorIdx", nickColor } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { PropertyKeyName.keyNickNameColor, nickColor } });
     }
 
     float[] ColorToFloat(Color color)
@@ -95,7 +96,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     public void SelectCharacter(CharacterInfo _characterInfo)
     {
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-        bool[] selectedChars = (bool[])roomProperties["selectedChars"];
+        bool[] selectedChars = (bool[])roomProperties[PropertyKeyName.keyCharIdx];
 
         int newIdx = infoes.IndexOf(_characterInfo);
         // 이미 선택되어 있을 경우 종료
@@ -112,13 +113,14 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         OnChangeCharacter(selectInfo.charName, curIdx, newIdx);
         curIdx = newIdx;
 
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "NickColorIdx", ColorToFloat(selectInfo.charColor) } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties
+            (new Hashtable { { PropertyKeyName.keyNickNameColor, ColorToFloat(selectInfo.charColor) } });
     }
 
     // 프로퍼티 값이 바뀌면 UI 업데이트
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        if (propertiesThatChanged.ContainsKey("selectedChars"))
+        if (propertiesThatChanged.ContainsKey(PropertyKeyName.keySelectedChars))
         {
             UpdateSelectView();
         }
@@ -129,7 +131,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     {
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
 
-        if (roomProperties.TryGetValue("selectedChars", out object selectedCharsObj))
+        if (roomProperties.TryGetValue(PropertyKeyName.keySelectedChars, out object selectedCharsObj))
         {
             bool[] selectedChars = (bool[])selectedCharsObj;
 

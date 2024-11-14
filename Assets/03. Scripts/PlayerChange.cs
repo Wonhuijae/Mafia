@@ -29,14 +29,15 @@ public class PlayerChange : MonoBehaviourPunCallbacks
     void UpdateSelect(int _curIdx, int _newIdx)
     {
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+        string keyName = PropertyKeyName.keySelectedChars;
 
-        if(roomProperties.TryGetValue("selectedChars", out object selects))
+        if(roomProperties.TryGetValue(keyName, out object selects))
         {
             bool[] selectChars = (bool[])selects;
             selectChars[_newIdx] = true;
             selectChars[_curIdx] = false;
 
-            roomProperties["selectedChars"] = selectChars;
+            roomProperties[keyName] = selectChars;
             PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
         }
     }

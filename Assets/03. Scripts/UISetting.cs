@@ -21,8 +21,8 @@ public class UISetting : MonoBehaviourPunCallbacks
     public static event Action OnInputTextStart;
     public static event Action OnInputTextEnd;
 
-    private const string keyNameIsReady = "isReady";
-    private const string keyNameNickNameColor = "NickColorIdx";
+    private string keyNameIsReady = PropertyKeyName.keyIsReady;
+    private string keyNameNickNameColor = PropertyKeyName.keyIsReady;
 
     private void Awake()
     {
@@ -121,15 +121,16 @@ public class UISetting : MonoBehaviourPunCallbacks
     {
         // 게임 준비 상태 변경
         Hashtable playerReady = PhotonNetwork.LocalPlayer.CustomProperties;
+        string keyName = PropertyKeyName.keyIsReady;
 
-        if(playerReady.ContainsKey(keyNameIsReady))
+        if (playerReady.ContainsKey(keyName))
         {
-            playerReady[keyNameIsReady] = _ready;
+            playerReady[keyName] = _ready;
         }
 
         // 동기화
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerReady);
-        Debug.Log(playerReady[keyNameIsReady]);
+        Debug.Log(playerReady[keyName]);
     }
 
     public void ChangeNickName(string name)

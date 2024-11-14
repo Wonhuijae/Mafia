@@ -10,6 +10,16 @@ using TMPro;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+public static class PropertyKeyName
+{
+    public static string keySelectedChars = "selectedChars"; // 선택된 모델 배열
+    public static string keyIsReady = "isReady"; // 플레이어 준비 상태
+    public static string keyNickNameColor = "NickColorIdx"; // 닉네임 색깔
+    public static string keyCharIdx = "charIdx"; // 캐릭터 ID
+    public static string keySceneSynced = "SceneSynced"; // 동기화 여부
+    public static string keyCurrentScene = "CurrentScene"; // 현재 씬
+}
+
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public TMP_InputField joinRoomName;
@@ -18,7 +28,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     List<string> roomNames = new();
     private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private const int nameLength = 8;
-    private const string keyNameSelectedChars = "selectedChars";
 
     private const int totalChars = 8;
 
@@ -96,8 +105,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
 
             Hashtable roomProperties = new Hashtable();
-            roomProperties[keyNameSelectedChars] = selectedChars;
-            roomProperties["CurrentScene"] = SceneManager.GetActiveScene().name;
+            roomProperties[PropertyKeyName.keySelectedChars] = selectedChars;
+            roomProperties[PropertyKeyName.keyCurrentScene] = SceneManager.GetActiveScene().name;
 
             PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
 
@@ -136,8 +145,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // 씬 동기화 대기
     IEnumerator CheckSceneSyncWithMaster()
     {
-        while (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("SceneSynced") ||
-           (bool)PhotonNetwork.CurrentRoom.CustomProperties["SceneSynced"] == false)
+        while (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(PropertyKeyName.keySceneSynced) ||
+           (bool)PhotonNetwork.CurrentRoom.CustomProperties[PropertyKeyName.keySceneSynced] == false)
         {
             yield return null;
         }
@@ -148,7 +157,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             // 씬 로드 완료
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { "SceneSynced", true } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { PropertyKeyName.keySceneSynced, true } });
         }
     }
 
