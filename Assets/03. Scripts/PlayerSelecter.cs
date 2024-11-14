@@ -15,7 +15,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
 
     public Dictionary<CharacterInfo, GameObject> spawnDict = new();
 
-    public static event Action<string> OnChangeCharacter;
+    public static event Action<string, int, int> OnChangeCharacter;
 
     public Transform defaultSpawnPos;
     public Transform previewPos;
@@ -24,6 +24,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     private CharacterInfo selectInfo;
 
     private int charIdx;
+    private int curIdx;
 
     private NetworkManager instance;
 
@@ -62,6 +63,7 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
             if (!selectedChars[i])
             {
                 charIdx = i;
+                curIdx = i;
                 selectedChars[i] = true;
                 roomProperties["selectedChars"] = selectedChars;
 
@@ -87,14 +89,20 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
         bool[] selectedChars = (bool[])roomProperties["selectedChars"];
 
-        if (selectInfo != null) spawnDict[selectInfo].SetActive(false);
+        int newIdx = infoes.IndexOf(_characterInfo);
+        // 이미 선택되어 있을 경우 종료
+        if (selectedChars[newIdx] == true) return;
+        // 이전 선택과 같은 경우 종료
         if (selectInfo == _characterInfo) return;
 
+        // 이전 프리뷰 오브젝트 있을 경우 비활성화
+        if (selectInfo != null) spawnDict[selectInfo].SetActive(false);
         selectInfo = _characterInfo;
         spawnDict[_characterInfo].SetActive(true);
 
         // 캐릭터 모델 바꾸기
-        OnChangeCharacter(selectInfo.charName);
+        OnChangeCharacter(selectInfo.charName, curIdx, newIdx);
+        curIdx = newIdx;
     }
 
     // 프로퍼티 값이 바뀌면 UI 업데이트
@@ -109,7 +117,9 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     // 캐릭터 선택 UI 수정
     void UpdateSelectView()
     {
-        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("selectedChars", out object selectedCharsObj))
+        Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        if (roomProperties.TryGetValue("selectedChars", out object selectedCharsObj))
         {
             bool[] selectedChars = (bool[])selectedCharsObj;
 

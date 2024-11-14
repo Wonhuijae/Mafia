@@ -17,9 +17,27 @@ public class PlayerChange : MonoBehaviourPunCallbacks
     }
 
     // 모델 변경 요청
-    public void RequestModelChange(string _name)
+    public void RequestModelChange(string _name, int _curIdx, int _newIdx)
     {
-        if (pv.IsMine) pv.RPC("ChangeModel", RpcTarget.AllBuffered, _name);
+        if (pv.IsMine)
+        {
+            pv.RPC("ChangeModel", RpcTarget.AllBuffered, _name);
+            UpdateSelect(_curIdx, _newIdx);
+        }
+    }
+
+    void UpdateSelect(int _curIdx, int _newIdx)
+    {
+        Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+        if(roomProperties.TryGetValue("selectedChars", out object selects))
+        {
+            bool[] selectChars = (bool[])selects;
+            selectChars[_newIdx] = true;
+            selectChars[_curIdx] = false;
+
+            roomProperties["selectedChars"] = selectChars;
+            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+        }
     }
 
     [PunRPC]
