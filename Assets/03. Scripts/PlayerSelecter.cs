@@ -81,6 +81,14 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     void SpawnPlayer(int selectIdx, Vector3 spawnPos)
     {
         var player = PhotonNetwork.Instantiate("Player" + selectIdx, spawnPos, Quaternion.identity);
+        float[] nickColor = new float[4];
+        nickColor = ColorToFloat(infoes[selectIdx].charColor);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "NickColorIdx", nickColor } });
+    }
+
+    float[] ColorToFloat(Color color)
+    {
+        return new float[]{ color.r, color.g, color.b, color.a};
     }
 
     // 캐릭터 선택
@@ -103,6 +111,8 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         // 캐릭터 모델 바꾸기
         OnChangeCharacter(selectInfo.charName, curIdx, newIdx);
         curIdx = newIdx;
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "NickColorIdx", ColorToFloat(selectInfo.charColor) } });
     }
 
     // 프로퍼티 값이 바뀌면 UI 업데이트

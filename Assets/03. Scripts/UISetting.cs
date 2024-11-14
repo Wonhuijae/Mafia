@@ -21,7 +21,8 @@ public class UISetting : MonoBehaviourPunCallbacks
     public static event Action OnInputTextStart;
     public static event Action OnInputTextEnd;
 
-    private string keyNameIsReady = "isReady";
+    private const string keyNameIsReady = "isReady";
+    private const string keyNameNickNameColor = "NickColorIdx";
 
     private void Awake()
     {
@@ -54,7 +55,7 @@ public class UISetting : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
-        if (changedProps.ContainsKey(keyNameIsReady))
+        if (changedProps.ContainsKey(keyNameIsReady) || changedProps.ContainsKey(keyNameNickNameColor))
         {
             UpdatePlayerList();
         }
@@ -82,6 +83,14 @@ public class UISetting : MonoBehaviourPunCallbacks
                 {
                     bool isReady = (bool)players[i].CustomProperties[keyNameIsReady];
                     playerReady[i].isOn = isReady;
+                }
+
+                if (players[i].CustomProperties.ContainsKey(keyNameNickNameColor))
+                {
+                    float[] color = (float[])players[i].CustomProperties[keyNameNickNameColor];
+                    Color nickColor = new Color(color[0], color[1], color[2], color[3]);
+
+                    playerName[i].color = nickColor;
                 }
 
                 string nick = players[i].NickName;
