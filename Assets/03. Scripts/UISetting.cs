@@ -17,16 +17,21 @@ public class UISetting : MonoBehaviourPunCallbacks
 
     public TextMeshProUGUI[] playerName;
     public Toggle[] playerReady;
+    public GameObject roomSettingButton;
 
     public static event Action OnInputTextStart;
     public static event Action OnInputTextEnd;
 
     private string keyNameIsReady = PropertyKeyName.keyIsReady;
-    private string keyNameNickNameColor = PropertyKeyName.keyIsReady;
+    private string keyNameNickNameColor = PropertyKeyName.keyNickNameColor;
 
     private void Awake()
     {
         NetworkManager.OnJoinRoom += UpdatePlayerList;  
+        NetworkManager.OnJoinRoom += ()=>
+        {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient) roomSettingButton.SetActive(true);
+        };  
     }
 
     private void Start()
@@ -110,7 +115,7 @@ public class UISetting : MonoBehaviourPunCallbacks
         Hashtable playerProperties = PhotonNetwork.LocalPlayer.CustomProperties;
 
         PhotonNetwork.LocalPlayer.NickName = inputPlayerNickname.text;
-        PhotonNetwork.LocalPlayer.CustomProperties.Add(keyNameIsReady, false);
+        playerProperties[keyNameIsReady] = false;
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
         updatePlayerNickname.text = PhotonNetwork.LocalPlayer.NickName;
