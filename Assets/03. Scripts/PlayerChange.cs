@@ -16,6 +16,11 @@ public class PlayerChange : MonoBehaviourPunCallbacks
         PlayerSelecter.OnChangeCharacter += RequestModelChange;
     }
 
+    private void OnDisable()
+    {
+        PlayerSelecter.OnChangeCharacter -= RequestModelChange;
+    }
+
     // 모델 변경 요청
     public void RequestModelChange(string _name, int _curIdx, int _newIdx)
     {

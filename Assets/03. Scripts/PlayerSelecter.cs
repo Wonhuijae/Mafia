@@ -40,6 +40,11 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
         NetworkManager.OnJoinRoom += PlayerInit;
     }
 
+    private void OnDisable()
+    {
+        NetworkManager.OnJoinRoom -= PlayerInit;
+    }
+
     // 최초 캐릭터 설정
     public void PlayerInit()
     {

@@ -28,10 +28,13 @@ public class UISetting : MonoBehaviourPunCallbacks
     private void Awake()
     {
         NetworkManager.OnJoinRoom += UpdatePlayerList;  
-        NetworkManager.OnJoinRoom += ()=>
-        {
-            if (PhotonNetwork.LocalPlayer.IsMasterClient) roomSettingButton.SetActive(true);
-        };  
+        NetworkManager.OnJoinRoom += RoomSettingShow;  
+    }
+
+    private void OnDisable()
+    {
+        NetworkManager.OnJoinRoom -= UpdatePlayerList;
+        NetworkManager.OnJoinRoom -= RoomSettingShow;
     }
 
     private void Start()
@@ -76,7 +79,6 @@ public class UISetting : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
-    [PunRPC]
     void UpdatePlayerList()
     {
         Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
@@ -152,5 +154,10 @@ public class UISetting : MonoBehaviourPunCallbacks
     public void InputEnd(string _textInput)
     {
         if (OnInputTextEnd != null) OnInputTextEnd();
+    }
+
+    void RoomSettingShow()
+    {
+        if (PhotonNetwork.LocalPlayer.IsMasterClient) roomSettingButton.SetActive(true);
     }
 }
