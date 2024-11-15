@@ -46,6 +46,24 @@ EditorBuildSettings:
       for 4.unity
     guid: e7a7f9734636d415ca84ef3aaf7680f6
   - enabled: 0
+    path: Assets/Photon/PhotonVoice/Demos/DemoVoiceMinimal/DemoVoiceMinimal-Scene.unity
+    guid: 2da9606550d4940d6b7d040e3913bdd8
+  - enabled: 0
+    path: Assets/Photon/PhotonVoice/Demos/DemoVoicePun/DemoVoicePun-Scene.unity
+    guid: a3f3c3b3816924199acba595045624d2
+  - enabled: 0
+    path: Assets/Photon/PhotonVoice/Demos/DemoVoiceUI/DemoVoiceUI.unity
+    guid: 0ab5c0cab248b1c449cb35dd2672ffdb
+  - enabled: 0
+    path: Assets/Photon/PhotonVoice/Demos/DemoVoiceProximityChat/Scenes/ProximityVoiceChat.unity
+    guid: 9f1cd40f49900e341843571f937a9c61
+  - enabled: 0
+    path: Assets/Photon/PhotonVoice/Demos/Fusion/DemoFollowState/Scene.unity
+    guid: f5040f01fcadeee468dec020d5c95efd
+  - enabled: 0
+    path: Assets/Photon/PhotonVoice/Demos/Fusion/DemoNetworkObject/Scene.unity
+    guid: 64b14236c88a0fb44adaeda9ded16a2a
+  - enabled: 0
     path: Assets/Photon/PhotonUnityNetworking/Demos/DemoSlotRacer/SlotCar-Scene.unity
     guid: 711b38c07f2cf904f81b3422c67f1825
   - enabled: 1

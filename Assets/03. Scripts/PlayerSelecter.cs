@@ -14,7 +14,8 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     private GameObject[] characterButtons;
 
     public Dictionary<CharacterInfo, GameObject> spawnDict = new();
-
+    
+    public static event Action<GameObject> OnCharacterInit;
     public static event Action<string, int, int> OnChangeCharacter;
 
     public Transform defaultSpawnPos;
@@ -87,9 +88,12 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     void SpawnPlayer(int selectIdx, Vector3 spawnPos)
     {
         var player = PhotonNetwork.Instantiate("Player" + selectIdx, spawnPos, Quaternion.identity);
-        float[] nickColor = new float[4];
-        nickColor = ColorToFloat(infoes[selectIdx].charColor);
+        
+        // 닉네임 색깔
+        float[] nickColor = ColorToFloat(infoes[selectIdx].charColor);
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { PropertyKeyName.keyNickNameColor, nickColor } });
+        
+        if (OnCharacterInit != null) OnCharacterInit(player);
     }
 
     float[] ColorToFloat(Color color)
