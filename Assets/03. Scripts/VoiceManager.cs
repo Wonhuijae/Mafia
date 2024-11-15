@@ -1,4 +1,4 @@
-using Photon.Pun;
+ï»¿using Photon.Pun;
 using Photon.Voice.PUN;
 using Photon.Voice.Unity;
 using UnityEngine;
@@ -8,6 +8,7 @@ public class VoiceManager : MonoBehaviour
     PunVoiceClient voiceClient;
     Recorder recorder;
 
+    public GameObject detectMicInput;
     private void Awake()
     {
         voiceClient = GetComponent<PunVoiceClient>();
@@ -17,6 +18,9 @@ public class VoiceManager : MonoBehaviour
         recorder.VoiceDetection = true;
 
         PlayerSelecter.OnCharacterInit += SetSpeacker;
+
+        // ìŒì„± ê°ì§€ ì‹œ UIì— í‘œì‹œ
+        recorder.VoiceDetector.OnDetected += DetectVoice;
     }
 
     private void OnDisable()
@@ -38,17 +42,17 @@ public class VoiceManager : MonoBehaviour
         
         if (playePv != null)
         {
-            Speaker speaker = player.GetComponentInChildren<Speaker>();
-
-            // ÀÚ½ÅÀÇ Ä³¸¯ÅÍÀÇ ½ºÇÇÄ¿¸¸ »ì·ÁµÒ
+            // ìŠ¤í”¼ì»¤ ì„¤ì •
             if (playePv.IsMine)
             {
                 voiceClient.SpeakerPrefab = player;
             }
-            else
-            {
-                Destroy(speaker);
-            }
         }
+    }
+
+    void DetectVoice()
+    {
+        detectMicInput.SetActive(!detectMicInput.activeInHierarchy);
+        Debug.Log(detectMicInput.activeInHierarchy);
     }
 }
