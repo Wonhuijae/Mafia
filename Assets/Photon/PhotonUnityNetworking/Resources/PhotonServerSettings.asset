@@ -43,6 +43,7 @@ MonoBehaviour:
   - RPCChangeModel
   - SetAnimator
   - SetCameraTarget
+  - UpdatePlayerList
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

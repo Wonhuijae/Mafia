@@ -96,7 +96,8 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     public void SelectCharacter(CharacterInfo _characterInfo)
     {
         Hashtable roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-        bool[] selectedChars = (bool[])roomProperties[PropertyKeyName.keyCharIdx];
+        bool[] selectedChars = (bool[])roomProperties[PropertyKeyName.keySelectedChars];
+        if (selectedChars == null) return;
 
         int newIdx = infoes.IndexOf(_characterInfo);
         // 이미 선택되어 있을 경우 종료

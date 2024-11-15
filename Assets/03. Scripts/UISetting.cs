@@ -60,7 +60,7 @@ public class UISetting : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
-        if (changedProps.ContainsKey(keyNameIsReady) || changedProps.ContainsKey(keyNameNickNameColor))
+        if (changedProps.ContainsKey(keyNameIsReady) || changedProps.ContainsKey(keyNameNickNameColor) || changedProps.ContainsKey(255))
         {
             UpdatePlayerList();
         }
@@ -76,6 +76,7 @@ public class UISetting : MonoBehaviourPunCallbacks
         UpdatePlayerList();
     }
 
+    [PunRPC]
     void UpdatePlayerList()
     {
         Photon.Realtime.Player[] players = PhotonNetwork.PlayerList;
@@ -140,7 +141,6 @@ public class UISetting : MonoBehaviourPunCallbacks
 
     public void ChangeNickName(string name)
     {
-        Debug.Log(name);
         PhotonNetwork.LocalPlayer.NickName = name;
     }
 
