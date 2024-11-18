@@ -100,5 +100,6 @@ public class GameManager : MonoBehaviour
     void SetMafiaNumber(int num)
     {
         mafiaNum = num;
+        Debug.Log(mafiaNum);
     }
 }

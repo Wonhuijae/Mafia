@@ -186,10 +186,9 @@ public class UISetting : MonoBehaviourPunCallbacks
 
     void SetButton()
     {
-        if (mafiaNum > 3)
+        if (mafiaNum >= 2)
         {
             plusBTN.interactable = false;
-            mafiaNum--;
         }
         else if (mafiaNum <= 1)
         {

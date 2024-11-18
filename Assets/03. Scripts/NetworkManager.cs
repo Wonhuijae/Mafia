@@ -116,8 +116,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             StartCoroutine(CheckSceneSyncWithMaster()) ;
         }
-        
-        StartCoroutine(WaitRoutine());
     }
 
     // 캐릭터 초기화
@@ -150,6 +148,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             yield return null;
         }
+
+        StartCoroutine(WaitRoutine());
     }
 
     private void OnSceneLoadingComplete(Scene scene, LoadSceneMode mode)

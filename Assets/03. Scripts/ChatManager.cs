@@ -1,6 +1,9 @@
-using Photon.Pun;
+ï»¿using Photon.Pun;
+using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ChatManager : MonoBehaviour
 {
@@ -15,16 +18,16 @@ public class ChatManager : MonoBehaviour
         pv = GetComponent<PhotonView>();
     }
 
-    // Ã¤ÆÃ Àü¼Û
-    public void SendChat()
+    // ì±„íŒ… ì „ì†¡
+    public void SendChat(string input)
     {
         string chat = chatInput.text;
-        if (chat == "") return;
+        if (string.IsNullOrEmpty(chat)) return;
         pv.RPC("UpdateChat", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, chat);
         chatInput.text = "";
     }
 
-    // Ã¤ÆÃÃ¢ ¾÷µ¥ÀÌÆ®
+    // ì±„íŒ…ì°½ ì—…ë°ì´íŠ¸
     [PunRPC]
     void UpdateChat(string name, string str)
     {

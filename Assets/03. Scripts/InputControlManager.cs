@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputControlManager : MonoBehaviour
 {
-    // ÅØ½ºÆ® ÀÔ·Â ½Ã ÇÃ·¹ÀÌ¾î ÀÌµ¿ È°¼ºÈ­/ºñÈ°¼ºÈ­ °ü¸®
+    // í…ìŠ¤íŠ¸ ì…ë ¥ ì‹œ í”Œë ˆì´ì–´ ì´ë™ í™œì„±í™”/ë¹„í™œì„±í™” ê´€ë¦¬
     private PlayerInput playerInput;
 
     private void Awake()

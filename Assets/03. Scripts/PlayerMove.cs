@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using static Photon.Pun.PhotonAnimatorView;
 
 public class PlayerMove : MonoBehaviourPunCallbacks
@@ -40,6 +41,7 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         GetComponent<PlayerInput>().enabled = false;
 
         NetworkManager.Instance.AddPlayer(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     public override void OnLeftRoom()
@@ -60,6 +62,7 @@ public class PlayerMove : MonoBehaviourPunCallbacks
     private void Update()
     {
         if (animator == null) animator = GetComponentInChildren<Animator>();
+        if (cineCam == null) SetCameraTarget(playerModel);
 
         if (myPhotonView.IsMine && animator != null)
         {
