@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     int gameIdx;
     int mafiaNum;
 
+    PhotonView pv;
     static Vector3 startPos = Vector3.zero;
 
     List<GameObject> corpse = new();
@@ -18,7 +20,7 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if(m_instance == null)
+            if (m_instance == null)
             {
                 m_instance = FindAnyObjectByType<GameManager>();
             }
@@ -28,28 +30,29 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance != this)
+        if (Instance != this)
         {
             Destroy(gameObject);
         }
 
         DontDestroyOnLoad(gameObject);
+        pv = GetComponent<PhotonView>();
 
         GameSetting.OnSetNumber += SetMafiaNumber;
     }
 
     public void GameStart()
     {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient && CheckReady()) 
+        if (PhotonNetwork.LocalPlayer.IsMasterClient && CheckReady())
         {
             PhotonNetwork.LoadLevel("GameLevel" + gameIdx);
-            PlayerSet();
+            pv.RPC("PlayerSet", RpcTarget.All);
         }
     }
 
     bool CheckReady()
     {
-        foreach(var p in PhotonNetwork.PlayerList)
+        foreach (var p in PhotonNetwork.PlayerList)
         {
             bool bReady = (bool)p.CustomProperties[PropertyKeyName.keyIsReady];
 
@@ -58,14 +61,29 @@ public class GameManager : MonoBehaviour
 
         return true;
     }
+    
+    [PunRPC]
+    public void PlayerSet()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            List<GameObject> lists = NetworkManager.Instance.GetPlayerLists();
+            int[] selectedMafia = SelectMafia(lists.Count);
+            pv.RPC("SyncMafiaSelection", RpcTarget.All, selectedMafia); // 모든 클라이언트에 동기화
+        }
+    }
 
-    void PlayerSet()
+    [PunRPC]
+    public void SyncMafiaSelection(int[] selectedMafia)
     {
         List<GameObject> lists = NetworkManager.Instance.GetPlayerLists();
+        Debug.Log(lists.Count > 0);
+        AssignRoles(lists, selectedMafia);
+    }
 
-        int[] selectedMafia = SelectMafia(lists.Count);
-
-        for (int i = 0; i < lists.Count; i++) 
+    void AssignRoles(List<GameObject> lists, int[] selectedMafia)
+    {
+        for (int i = 0; i < lists.Count; i++)
         {
             if (Array.Exists(selectedMafia, e => e == i))
             {
@@ -82,21 +100,15 @@ public class GameManager : MonoBehaviour
 
     int[] SelectMafia(int size)
     {
-        int[] mafia = new int[mafiaNum];
+        HashSet<int> selected = new HashSet<int>();
 
-        for (int i = 0; i < mafia.Length; i++) 
+        while (selected.Count < mafiaNum)
         {
-            int r;
-            do
-            {
-                r = UnityEngine.Random.Range(0, size);
-
-            } while (!Array.Exists(mafia, e => e == r));
-
-            mafia[i] = r;
+            int r = UnityEngine.Random.Range(0, size);
+            selected.Add(r);
         }
 
-        return mafia;
+        return new List<int>(selected).ToArray();
     }
 
     void SetMafiaNumber(int num)
@@ -108,6 +120,5 @@ public class GameManager : MonoBehaviour
     public void CrewDie(GameObject c)
     {
         corpse.Add(c);
-        c.GetComponent<Animator>();
     }
 }

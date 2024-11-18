@@ -45,6 +45,8 @@ MonoBehaviour:
   - RespawnSpaceship
   - UpdateChat
   - SpawnCorpse
+  - PlayerSet
+  - SyncMafiaSelection
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

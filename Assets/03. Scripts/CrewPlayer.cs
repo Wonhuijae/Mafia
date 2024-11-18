@@ -32,22 +32,29 @@ public class CrewPlayer : GamePlayer, ICrew
     }
 
     [PunRPC]
-    void SpawnCorpse()
+    public void SpawnCorpse()
     {
         GameObject c = Instantiate(model, transform.position, transform.rotation);
         playerMove.SetCameraTarget(c);
         model.SetActive(false);
+        Animator corpseAnim = c.GetComponentInChildren<Animator>();
+        corpseAnim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
 
         c.AddComponent<PhotonView>();
-        c.GetComponent<PhotonView>().observableSearch = PhotonView.ObservableSearch.AutoFindAll;
+        PhotonView photonView = c.GetComponent<PhotonView>();
+        photonView.observableSearch = PhotonView.ObservableSearch.AutoFindAll;
+
+        PhotonAnimatorView animatorView = c.GetComponent<PhotonAnimatorView>();
+        Destroy(animatorView);
+        c.AddComponent<PhotonAnimatorView>();
 
         GameObject mesh = c.GetComponentInChildren<SkinnedMeshRenderer>().gameObject;
-        mesh.AddComponent<CapsuleCollider>();
+        mesh.AddComponent<BoxCollider>();
         
         Rigidbody r = c.AddComponent<Rigidbody>();
+        r.freezeRotation = true;
         r.useGravity = true;
 
-        Animator corpseAnim = c.GetComponentInChildren<Animator>();
         corpseAnim.SetTrigger("Die");
     }
 }

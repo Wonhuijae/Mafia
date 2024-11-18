@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GamePlayer : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class GamePlayer : MonoBehaviour
         model = GetComponentInChildren<Animator>().gameObject;
         playerMove = GetComponent<PlayerMove>();
         characterController = GetComponent<CharacterController>();
+
+        SceneManager.activeSceneChanged += RePose;
     }
 
     // 시체 신고
@@ -42,5 +45,10 @@ public class GamePlayer : MonoBehaviour
 
         playerMove.enabled = false;
         characterController.enabled = false;
+    }
+
+    void RePose(Scene oldScene, Scene curScene)
+    {
+        if(curScene.name != "WaitingScene") transform.position = Vector3.zero;
     }
 }
