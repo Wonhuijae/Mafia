@@ -14,23 +14,17 @@ public class UISetting : MonoBehaviourPunCallbacks
     public TextMeshProUGUI roomName;
     public TMP_InputField inputPlayerNickname;
     public TMP_InputField updatePlayerNickname;
-
-    public TextMeshProUGUI mafiaNumUI;
-    public Button plusBTN;
-    public Button minusBTN;
-
+    
     public TextMeshProUGUI[] playerName;
     public Toggle[] playerReady;
-    public GameObject roomSettingButton;
+    public GameObject[] masterOnlyButtons;
 
     public static event Action OnInputTextStart;
     public static event Action OnInputTextEnd;
-    public static event Action<int> OnSetNumber;
 
     private string keyNameIsReady = PropertyKeyName.keyIsReady;
     private string keyNameNickNameColor = PropertyKeyName.keyNickNameColor;
 
-    int mafiaNum = 1;
 
     private void Awake()
     {
@@ -48,8 +42,6 @@ public class UISetting : MonoBehaviourPunCallbacks
     {
         roomName.text = PhotonNetwork.CurrentRoom.Name;
         updatePlayerNickname.onEndEdit.AddListener(ChangeNickName);
-
-        mafiaNumUI.text = mafiaNum.ToString();
     }
 
     public void CopyRoomName()
@@ -167,35 +159,12 @@ public class UISetting : MonoBehaviourPunCallbacks
 
     void RoomSettingShow()
     {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient) roomSettingButton.SetActive(true);
-    }
-
-    public void PlusMafiaNum()
-    {
-        mafiaNum++;
-
-        SetButton();
-    }
-
-    public void MinusMafiaNum()
-    {
-        mafiaNum--;
-
-        SetButton();
-    }
-
-    void SetButton()
-    {
-        if (mafiaNum >= 2)
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            plusBTN.interactable = false;
+            foreach(var o in masterOnlyButtons)
+            {
+                o.SetActive(true);
+            }
         }
-        else if (mafiaNum <= 1)
-        {
-            minusBTN.interactable = false;
-        }
-
-        mafiaNumUI.text = mafiaNum.ToString();
-        OnSetNumber(mafiaNum);
     }
 }

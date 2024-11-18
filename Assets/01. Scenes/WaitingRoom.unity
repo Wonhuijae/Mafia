@@ -894,7 +894,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.000091552734}
+  m_AnchoredPosition: {x: 0, y: -0.00048828125}
   m_SizeDelta: {x: 784, y: 832}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &82856959
@@ -2929,8 +2929,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 563138223}
-        m_TargetAssemblyTypeName: UISetting, Assembly-CSharp
+      - m_Target: {fileID: 563138225}
+        m_TargetAssemblyTypeName: GameSetting, Assembly-CSharp
         m_MethodName: PlusMafiaNum
         m_Mode: 1
         m_Arguments:
@@ -3999,6 +3999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 563138224}
   - component: {fileID: 563138223}
+  - component: {fileID: 563138225}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -4021,9 +4022,6 @@ MonoBehaviour:
   roomName: {fileID: 1323448445}
   inputPlayerNickname: {fileID: 1958776571}
   updatePlayerNickname: {fileID: 1177803010}
-  mafiaNumUI: {fileID: 74609967}
-  plusBTN: {fileID: 457140389}
-  minusBTN: {fileID: 1974969230}
   playerName:
   - {fileID: 1306055206}
   - {fileID: 777703966}
@@ -4042,7 +4040,9 @@ MonoBehaviour:
   - {fileID: 1352261399}
   - {fileID: 1792415599}
   - {fileID: 1855300224}
-  roomSettingButton: {fileID: 62258258}
+  masterOnlyButtons:
+  - {fileID: 62258258}
+  - {fileID: 1161684611}
 --- !u!4 &563138224
 Transform:
   m_ObjectHideFlags: 0
@@ -4058,6 +4058,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &563138225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563138222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9cdd2d3050c0c842a82e2f9a1b53644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mafiaNumUI: {fileID: 74609967}
+  plusBTN: {fileID: 457140389}
+  minusBTN: {fileID: 1974969230}
 --- !u!1 &567096754
 GameObject:
   m_ObjectHideFlags: 0
@@ -4216,7 +4231,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 537843074}
   m_HandleRect: {fileID: 537843073}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6164,7 +6179,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 877907548}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999293
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6774,8 +6789,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1107207259}
   m_HandleRect: {fileID: 1107207258}
   m_Direction: 0
-  m_Value: 0.50006104
-  m_Size: 0.99872464
+  m_Value: 0.4996644
+  m_Size: 0.99872416
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8792,7 +8807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1161684612
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15942,8 +15957,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 563138223}
-        m_TargetAssemblyTypeName: UISetting, Assembly-CSharp
+      - m_Target: {fileID: 563138225}
+        m_TargetAssemblyTypeName: GameSetting, Assembly-CSharp
         m_MethodName: MinusMafiaNum
         m_Mode: 1
         m_Arguments:

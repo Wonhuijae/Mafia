@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        UISetting.OnSetNumber += SetMafiaNumber;
+        GameSetting.OnSetNumber += SetMafiaNumber;
     }
 
     public void GameStart()
