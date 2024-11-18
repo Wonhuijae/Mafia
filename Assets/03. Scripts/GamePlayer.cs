@@ -12,12 +12,16 @@ public class GamePlayer : MonoBehaviour
     protected GameObject model;
     protected PhotonView pv;
 
+    protected PlayerMove playerMove;
+    protected CharacterController characterController;
+
     void Awake()
     {
         instance = GameManager.Instance;
         pv = GetComponent<PhotonView>();
         model = GetComponentInChildren<Animator>().gameObject;
-        Debug.Log(model.name);
+        playerMove = GetComponent<PlayerMove>();
+        characterController = GetComponent<CharacterController>();
     }
 
     // 시체 신고
@@ -36,9 +40,7 @@ public class GamePlayer : MonoBehaviour
     {
         if (isDie) return;
 
-        GetComponent<PlayerMove>().enabled = false;
-        GetComponent<CharacterController>().enabled = false;
-        
-        model.SetActive(false);
+        playerMove.enabled = false;
+        characterController.enabled = false;
     }
 }

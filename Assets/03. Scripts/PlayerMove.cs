@@ -28,6 +28,8 @@ public class PlayerMove : MonoBehaviourPunCallbacks
 
     private GameObject playerModel;
 
+    private GameObject cameraTarget;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -97,9 +99,14 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         moveInput = context.ReadValue<Vector2>();
     }
 
+    public void SetCameraTarget()
+    {
+        SetCameraTarget(cameraPos);
+    }
+
     public void SetCameraTarget(GameObject _target)
     {
-        playerModel = _target;
+        cameraTarget = _target;
 
         // 플레이어 카메라 설정
         if (myPhotonView.IsMine)
@@ -108,8 +115,8 @@ public class PlayerMove : MonoBehaviourPunCallbacks
             cineCam = FindAnyObjectByType<CinemachineCamera>();
 
             // 카메라가 추적 대상 설정
-            cineCam.Follow = playerModel.transform;
-            cineCam.LookAt = playerModel.transform;
+            cineCam.Follow = cameraTarget.transform;
+            cineCam.LookAt = cameraTarget.transform;
         }
         else
         {

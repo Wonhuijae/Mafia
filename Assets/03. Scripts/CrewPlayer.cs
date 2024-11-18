@@ -20,23 +20,32 @@ public class CrewPlayer : GamePlayer, ICrew
 
         pv.RPC("SpawnCorpse", RpcTarget.All);
         Die();
+        Invoke("Ghost", 3f);
+    }
+
+    void Ghost()
+    {
+        characterController.enabled = true;
+        playerMove.enabled = true;
+
+        playerMove.SetCameraTarget();
     }
 
     [PunRPC]
     void SpawnCorpse()
     {
         GameObject c = Instantiate(model, transform.position, transform.rotation);
+        playerMove.SetCameraTarget(c);
+        model.SetActive(false);
 
         c.AddComponent<PhotonView>();
         c.GetComponent<PhotonView>().observableSearch = PhotonView.ObservableSearch.AutoFindAll;
 
-        CapsuleCollider coll = c.AddComponent<CapsuleCollider>();
-        coll.center = new Vector3(0, 0.5f, 0);
-        coll.radius = 0.4f;
-        coll.height = 2.06f;
+        GameObject mesh = c.GetComponentInChildren<SkinnedMeshRenderer>().gameObject;
+        mesh.AddComponent<CapsuleCollider>();
         
         Rigidbody r = c.AddComponent<Rigidbody>();
-        // r.useGravity = true;
+        r.useGravity = true;
 
         Animator corpseAnim = c.GetComponentInChildren<Animator>();
         corpseAnim.SetTrigger("Die");
