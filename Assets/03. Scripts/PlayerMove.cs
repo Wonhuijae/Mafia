@@ -38,6 +38,14 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         SetCameraTarget(playerModel);
 
         GetComponent<PlayerInput>().enabled = false;
+
+        NetworkManager.Instance.AddPlayer(gameObject);
+    }
+
+    public override void OnLeftRoom()
+    {
+        NetworkManager.Instance.RemovePlayer(gameObject);
+        base.OnLeftRoom();
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)

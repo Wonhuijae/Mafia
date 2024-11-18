@@ -23,12 +23,12 @@ public static class PropertyKeyName
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public TMP_InputField joinRoomName;
-    public static event Action OnJoinRoom;
 
+    public static event Action OnJoinRoom;
     List<string> roomNames = new();
+    List<GameObject> gamePlayers = new();
     private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private const int nameLength = 8;
-
     private const int totalChars = 8;
 
     private static NetworkManager m_instance;
@@ -182,5 +182,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
 
         return roomNameString;
+    }
+
+    public void AddPlayer(GameObject player)
+    {
+        gamePlayers.Add(player);
+    }
+
+    public void RemovePlayer(GameObject player)
+    {
+        gamePlayers.Remove(player);
+    }
+
+    public List<GameObject> GetPlayerLists()
+    {
+        return gamePlayers;
     }
 }
