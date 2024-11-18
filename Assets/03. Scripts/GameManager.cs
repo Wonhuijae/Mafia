@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     static Vector3 startPos = Vector3.zero;
 
+    List<GameObject> corpse = new();
+
     private static GameManager m_instance;
     public static GameManager Instance
     {
@@ -101,5 +103,11 @@ public class GameManager : MonoBehaviour
     {
         mafiaNum = num;
         Debug.Log(mafiaNum);
+    }
+
+    public void CrewDie(GameObject c)
+    {
+        corpse.Add(c);
+        c.GetComponent<Animator>();
     }
 }

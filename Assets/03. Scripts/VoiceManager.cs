@@ -2,6 +2,7 @@
 using Photon.Voice.PUN;
 using Photon.Voice.Unity;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VoiceManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class VoiceManager : MonoBehaviour
 
         // 음성 감지 시 UI에 표시
         recorder.VoiceDetector.OnDetected += DetectVoice;
+
+        SceneManager.activeSceneChanged += MicMute;
     }
 
     private void OnDisable()
@@ -28,11 +31,24 @@ public class VoiceManager : MonoBehaviour
         PlayerSelecter.OnCharacterInit -= SetSpeacker;
     }
 
+    public void MicMute(Scene oldScene, Scene curScene)
+    {
+        if (curScene.name != "WaitingRoom") MicMute();
+    }
+
     public void MicMute()
     {
         if (recorder != null)
         {
-            recorder.TransmitEnabled = !recorder.TransmitEnabled;
+            recorder.TransmitEnabled = false;
+        }
+    }
+
+    public void MicUnMute()
+    {
+        if (recorder != null)
+        {
+            recorder.TransmitEnabled = true;
         }
     }
 

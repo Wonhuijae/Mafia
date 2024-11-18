@@ -9,7 +9,16 @@ public class MafiaPlayer : GamePlayer, IMafia
 
     public void Kill()
     {
-        throw new System.NotImplementedException();
+        Collider[] crew = Physics.OverlapSphere(transform.position, 0.5f);
+
+        if(crew != null)
+        {
+            ICrew c = crew[0].GetComponent<ICrew>();
+            if(c != null)
+            {
+                c.CrewDie();
+            }
+        }
     }
 
     public void Vent()

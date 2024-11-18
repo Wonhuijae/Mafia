@@ -186,14 +186,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 138f91de-017f-4450-b15d-4f2bf18e933d
-    m_ActionName: 'Player/Chat[/Keyboard/enter]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8a452ed5-4c9f-4e0d-ac31-95aa54848446
-    m_ActionName: 'UI/Send[/Keyboard/enter]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -401,6 +393,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6107260803389495816, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
       insertIndex: -1
       addedObject: {fileID: 677687122788506642}
+    - targetCorrespondingSourceObject: {fileID: 6107260803389495816, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2109933291324163123}
   m_SourcePrefab: {fileID: 100100000, guid: 69efd68f815b0a6448a4f75ac19fb216, type: 3}
 --- !u!4 &6087844602675026957 stripped
 Transform:
@@ -433,11 +428,26 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: Turn
+  - Type: 9
+    SynchronizeType: 2
+    Name: Die
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
   - SynchronizeType: 1
     LayerIndex: 1
+--- !u!114 &2109933291324163123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6861109537647691447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 160c45093701431449d6fd7e08bbc824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1292051809865713199
 PrefabInstance:
   m_ObjectHideFlags: 0
