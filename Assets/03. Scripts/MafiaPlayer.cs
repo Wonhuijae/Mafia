@@ -25,7 +25,7 @@ public class MafiaPlayer : GamePlayer, IMafia
             ICrew crew = coll.GetComponent<ICrew>();
             if(crew != null)
             {
-                (crew as MonoBehaviour)?.Invoke("CrewDie", 3f);
+                crew.CrewDie();
             }
         }
     }

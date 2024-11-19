@@ -59,6 +59,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         SceneManager.sceneLoaded += OnSceneLoadingComplete;
     }
 
+
     public void ServerConnect()
     {
         PhotonNetwork.ConnectUsingSettings();
