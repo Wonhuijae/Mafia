@@ -101,6 +101,7 @@ public class PlayerMove : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
 
     public void SetCameraTarget()
     {
+        Debug.Log("SetCam");
         SetCameraTarget(cameraPos);
     }
 

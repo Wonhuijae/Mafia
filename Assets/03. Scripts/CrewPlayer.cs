@@ -12,7 +12,6 @@ public class CrewPlayer : GamePlayer, ICrew
     public void CrewDie()
     {
         Die();
-
     }
 
     public override void Die()
@@ -26,6 +25,7 @@ public class CrewPlayer : GamePlayer, ICrew
 
     void Ghost()
     {
+        Debug.Log("Ghost");
         characterController.enabled = true;
         playerMove.enabled = true;
 

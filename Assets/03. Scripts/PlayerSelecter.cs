@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
 using Photon.Realtime;
-using Unity.VisualScripting;
 
 public class PlayerSelecter : MonoBehaviourPunCallbacks
 {

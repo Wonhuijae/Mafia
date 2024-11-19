@@ -1070,8 +1070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9410680b80b26a4fb193a25b39ead42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killBTN: {fileID: 1023725766}
   rollText: {fileID: 296310130}
+  killButton: {fileID: 1023725766}
 --- !u!64 &513668187
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1954,7 +1954,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.00012207031, y: 0}
+  m_AnchoredPosition: {x: -0.00024414062, y: 0}
   m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1023725766

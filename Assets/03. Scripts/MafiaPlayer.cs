@@ -4,16 +4,11 @@ using UnityEngine.UI;
 
 public class MafiaPlayer : GamePlayer, IMafia
 {
-    public static event Action<Button> OnSetMafia;
+    public static event Action<MafiaPlayer> OnSetMafia;
 
-    private void Awake()
+    void Start()
     {
-        OnSetMafia();
-    }
-
-    void KillBtnSet(Button killBtn)
-    {
-        killBtn.gameObject.SetActive(true);
+        OnSetMafia(this);
     }
 
     public void CloseGate()
@@ -23,14 +18,14 @@ public class MafiaPlayer : GamePlayer, IMafia
 
     public void Kill()
     {
-        Collider[] crew = Physics.OverlapSphere(transform.position, 0.5f);
-
-        if(crew != null)
+        Debug.Log("Kill");
+        Collider[] colls = Physics.OverlapSphere(transform.position, 1f);
+        foreach (var coll in colls)
         {
-            ICrew c = crew[0].GetComponent<ICrew>();
-            if(c != null)
+            ICrew crew = coll.GetComponent<ICrew>();
+            if(crew != null)
             {
-                c.CrewDie();
+                (crew as MonoBehaviour)?.Invoke("CrewDie", 3f);
             }
         }
     }
