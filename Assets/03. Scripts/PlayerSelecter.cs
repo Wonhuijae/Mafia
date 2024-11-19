@@ -6,6 +6,7 @@ using Photon.Pun;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
 using Photon.Realtime;
+using Unity.VisualScripting;
 
 public class PlayerSelecter : MonoBehaviourPunCallbacks
 {
@@ -89,8 +90,6 @@ public class PlayerSelecter : MonoBehaviourPunCallbacks
     void SpawnPlayer(int selectIdx, Vector3 spawnPos)
     {
         var player = PhotonNetwork.Instantiate("Player" + selectIdx, spawnPos, Quaternion.identity);
-
-        PhotonNetwork.LocalPlayer.TagObject = player;
 
         // 닉네임 색깔
         float[] nickColor = ColorToFloat(infoes[selectIdx].charColor);

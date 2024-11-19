@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using static Photon.Pun.PhotonAnimatorView;
 
-public class PlayerMove : MonoBehaviourPunCallbacks
+public class PlayerMove : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
 {
     public CinemachineCamera cineCam;
 
@@ -122,6 +122,21 @@ public class PlayerMove : MonoBehaviourPunCallbacks
         {
             // 다른 플레이어의 카메라는 설정하지 않음 (자동으로 다른 플레이어의 카메라를 사용)
             if (cineCam != null) Destroy(cineCam.gameObject); // 다른 플레이어의 카메라는 없애버림
+        }
+    }
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        Debug.Log($"OnPhotonInstantiate - Sender: {info.Sender.NickName}, ActorNumber: {info.Sender.ActorNumber}");
+
+        if (info.Sender != null)
+        {
+            info.Sender.TagObject = this.gameObject;
+            Debug.Log($"TagObject set for player {info.Sender.NickName}");
+        }
+        else
+        {
+            Debug.LogError("Sender is null in OnPhotonInstantiate");
         }
     }
 }

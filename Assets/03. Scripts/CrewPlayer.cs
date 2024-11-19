@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class CrewPlayer : GamePlayer, ICrew
 {
-    void Start()
-    {
-        Invoke("CrewDie", 3f);
-    }
-
     public void Misson()
     {
         throw new System.NotImplementedException();

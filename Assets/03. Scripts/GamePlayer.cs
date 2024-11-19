@@ -17,8 +17,6 @@ public class GamePlayer : MonoBehaviour
     protected PlayerMove playerMove;
     protected CharacterController characterController;
 
-    protected TextMeshProUGUI tmpText;
-
     void Awake()
     {
         instance = GameManager.Instance;
@@ -28,13 +26,6 @@ public class GamePlayer : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         SceneManager.activeSceneChanged += RePose;
-
-        tmpText = FindAnyObjectByType<TextMeshProUGUI>(); 
-    }
-
-    private void Start()
-    {
-        tmpText.text = (string)PhotonNetwork.LocalPlayer.CustomProperties["Roll"];
     }
 
     // 시체 신고

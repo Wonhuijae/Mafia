@@ -1,7 +1,21 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MafiaPlayer : GamePlayer, IMafia
 {
+    public static event Action<Button> OnSetMafia;
+
+    private void Awake()
+    {
+        OnSetMafia();
+    }
+
+    void KillBtnSet(Button killBtn)
+    {
+        killBtn.gameObject.SetActive(true);
+    }
+
     public void CloseGate()
     {
         throw new System.NotImplementedException();

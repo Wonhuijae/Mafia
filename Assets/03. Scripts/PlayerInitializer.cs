@@ -2,12 +2,16 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using System;
+using System.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerInitializer : MonoBehaviourPunCallbacks
 {
+    public static event Action<string> onSetPlayer;
+
     TextMeshProUGUI text;
     PhotonView pv;
 
@@ -25,19 +29,16 @@ public class PlayerInitializer : MonoBehaviourPunCallbacks
             Debug.Log(targetPlayer.NickName + " : " + targetPlayer.CustomProperties["Role"]);
 
             GameObject playerObj = targetPlayer.TagObject as GameObject;
-            if(playerObj == null)
-            {
-                Debug.Log("playerObj: null");
-                Debug.Log(targetPlayer.NickName + " : " + targetPlayer.TagObject == null);
-            }
+
             playerObj.GetComponent<PhotonView>().RPC("SetRole", RpcTarget.All, playerRole);
+
+            if (playerObj.GetComponent<PhotonView>().IsMine) onSetPlayer(playerRole);
         }
     }
 
     [PunRPC]
     void SetRole(string role)
     {
-        Debug.Log(gameObject.name);
         if (role == "Mafia")
         {
             if (GetComponent<CrewPlayer>() != null)
@@ -62,7 +63,5 @@ public class PlayerInitializer : MonoBehaviourPunCallbacks
                 gameObject.AddComponent<CrewPlayer>();
             }
         }
-
-        text.text = role;
     }
 }

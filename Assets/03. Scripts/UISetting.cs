@@ -135,7 +135,6 @@ public class UISetting : MonoBehaviourPunCallbacks
 
         // 동기화
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerReady);
-        Debug.Log(playerReady[keyName]);
     }
 
     public void ChangeNickName(string name)
