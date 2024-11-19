@@ -68,10 +68,6 @@ public class UISetting : MonoBehaviourPunCallbacks
         {
             UpdatePlayerList();
         }
-        else
-        {
-            Debug.Log("키가 없음");
-        }
     }
 
     public override void OnJoinedRoom()

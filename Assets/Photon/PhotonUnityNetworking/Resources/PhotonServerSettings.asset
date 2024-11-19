@@ -47,6 +47,10 @@ MonoBehaviour:
   - SpawnCorpse
   - PlayerSet
   - SyncMafiaSelection
+  - RPC_SpawnCorpse
+  - AddRoleComponent
+  - AssignMafiaRoles
+  - SetRole
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

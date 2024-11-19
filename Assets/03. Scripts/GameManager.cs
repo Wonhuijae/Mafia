@@ -1,14 +1,19 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using ExitGames.Client.Photon;
 using NUnit.Framework;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class GameManager : MonoBehaviour
 {
     int gameIdx;
-    int mafiaNum;
+    int mafiaNum = 1;
 
     PhotonView pv;
     static Vector3 startPos = Vector3.zero;
@@ -40,16 +45,6 @@ public class GameManager : MonoBehaviour
 
         GameSetting.OnSetNumber += SetMafiaNumber;
     }
-
-    public void GameStart()
-    {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient && CheckReady())
-        {
-            PhotonNetwork.LoadLevel("GameLevel" + gameIdx);
-            pv.RPC("PlayerSet", RpcTarget.All);
-        }
-    }
-
     bool CheckReady()
     {
         foreach (var p in PhotonNetwork.PlayerList)
@@ -61,60 +56,56 @@ public class GameManager : MonoBehaviour
 
         return true;
     }
-    
-    [PunRPC]
-    public void PlayerSet()
+
+    public void GameStart()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.LocalPlayer.IsMasterClient && CheckReady())
         {
-            List<GameObject> lists = NetworkManager.Instance.GetPlayerLists();
-            int[] selectedMafia = SelectMafia(lists.Count);
-            pv.RPC("SyncMafiaSelection", RpcTarget.All, selectedMafia); // 모든 클라이언트에 동기화
+            PhotonNetwork.LoadLevel("GameLevel" + gameIdx);
+            AssignMafiaRoles();
         }
     }
 
-    [PunRPC]
-    public void SyncMafiaSelection(int[] selectedMafia)
+    public void AssignMafiaRoles()
     {
-        List<GameObject> lists = NetworkManager.Instance.GetPlayerLists();
-        Debug.Log(lists.Count > 0);
-        AssignRoles(lists, selectedMafia);
-    }
+        // 현재 접속된 플레이어 목록 가져오기
+        List<Player> players = PhotonNetwork.PlayerList.ToList();
+        int mafiaCount = mafiaNum;
 
-    void AssignRoles(List<GameObject> lists, int[] selectedMafia)
-    {
-        for (int i = 0; i < lists.Count; i++)
+        // 마피아를 뽑을 인덱스를 무작위로 선택
+        HashSet<int> mafiaIndexes = new HashSet<int>();
+        while (mafiaIndexes.Count < mafiaCount)
         {
-            if (Array.Exists(selectedMafia, e => e == i))
+            int index = UnityEngine.Random.Range(0, PhotonNetwork.CurrentRoom.PlayerCount);
+            mafiaIndexes.Add(index);  // 중복 없이 마피아 인덱스를 추가
+        }
+
+        // 각 플레이어에게 역할을 부여 (커스텀 프로퍼티 사용)
+        foreach (var player in players)
+        {
+            Hashtable roleSet = player.CustomProperties;
+
+            // 마피아인지 크루인지 역할 설정
+            if (mafiaIndexes.Contains(players.IndexOf(player)))
             {
-                lists[i].AddComponent<MafiaPlayer>();
+                // 마피아일 경우 커스텀 프로퍼티 설정
+                roleSet["Role"] = "Mafia";
             }
             else
             {
-                lists[i].AddComponent<CrewPlayer>();
+                // 크루일 경우 커스텀 프로퍼티 설정
+                roleSet["Role"] = "Crew";
             }
 
-            lists[i].transform.position = startPos;
+            player.SetCustomProperties(roleSet);  // 프로퍼티 설정
+
+            Debug.Log($"Player {player.NickName} is a {player.CustomProperties["Role"].ToString()}.");
         }
-    }
-
-    int[] SelectMafia(int size)
-    {
-        HashSet<int> selected = new HashSet<int>();
-
-        while (selected.Count < mafiaNum)
-        {
-            int r = UnityEngine.Random.Range(0, size);
-            selected.Add(r);
-        }
-
-        return new List<int>(selected).ToArray();
     }
 
     void SetMafiaNumber(int num)
     {
         mafiaNum = num;
-        Debug.Log(mafiaNum);
     }
 
     public void CrewDie(GameObject c)

@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,8 @@ public class GamePlayer : MonoBehaviour
     protected PlayerMove playerMove;
     protected CharacterController characterController;
 
+    protected TextMeshProUGUI tmpText;
+
     void Awake()
     {
         instance = GameManager.Instance;
@@ -25,6 +28,13 @@ public class GamePlayer : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         SceneManager.activeSceneChanged += RePose;
+
+        tmpText = FindAnyObjectByType<TextMeshProUGUI>(); 
+    }
+
+    private void Start()
+    {
+        tmpText.text = (string)PhotonNetwork.LocalPlayer.CustomProperties["Roll"];
     }
 
     // 시체 신고
@@ -45,10 +55,21 @@ public class GamePlayer : MonoBehaviour
 
         playerMove.enabled = false;
         characterController.enabled = false;
+        isDie = true;
     }
 
     void RePose(Scene oldScene, Scene curScene)
     {
         if(curScene.name != "WaitingScene") transform.position = Vector3.zero;
+    }
+
+    // 시체 스폰
+    [PunRPC]
+    public void RPC_SpawnCorpse()
+    {
+        if(this is CrewPlayer crew)
+        {
+            crew.SpawnCorpsewn();
+        }
     }
 }

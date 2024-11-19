@@ -16,10 +16,16 @@ public class CrewPlayer : GamePlayer, ICrew
 
     public void CrewDie()
     {
+        Die();
+
+    }
+
+    public override void Die()
+    {
         instance.CrewDie(model);
 
-        pv.RPC("SpawnCorpse", RpcTarget.All);
-        Die();
+        pv.RPC("RPC_SpawnCorpse", RpcTarget.All);
+        base.Die();
         Invoke("Ghost", 3f);
     }
 
@@ -31,8 +37,7 @@ public class CrewPlayer : GamePlayer, ICrew
         playerMove.SetCameraTarget();
     }
 
-    [PunRPC]
-    public void SpawnCorpse()
+    public void SpawnCorpsewn()
     {
         GameObject c = Instantiate(model, transform.position, transform.rotation);
         playerMove.SetCameraTarget(c);
@@ -50,7 +55,7 @@ public class CrewPlayer : GamePlayer, ICrew
 
         GameObject mesh = c.GetComponentInChildren<SkinnedMeshRenderer>().gameObject;
         mesh.AddComponent<BoxCollider>();
-        
+
         Rigidbody r = c.AddComponent<Rigidbody>();
         r.freezeRotation = true;
         r.useGravity = true;
