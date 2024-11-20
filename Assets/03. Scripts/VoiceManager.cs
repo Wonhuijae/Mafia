@@ -23,7 +23,7 @@ public class VoiceManager : MonoBehaviour
         // 음성 감지 시 UI에 표시
         recorder.VoiceDetector.OnDetected += DetectVoice;
 
-        SceneManager.activeSceneChanged += MicMute;
+        SceneManager.activeSceneChanged += MicSetting;
     }
 
     private void OnDisable()
@@ -31,9 +31,10 @@ public class VoiceManager : MonoBehaviour
         PlayerSelecter.OnCharacterInit -= SetSpeacker;
     }
 
-    public void MicMute(Scene oldScene, Scene curScene)
+    public void MicSetting(Scene oldScene, Scene curScene)
     {
-        if (curScene.name != "WaitingRoom") MicMute();
+        if (curScene.name.Contains("GameLevel")) MicMute();
+        else MicUnMute();
     }
 
     public void MicMute()

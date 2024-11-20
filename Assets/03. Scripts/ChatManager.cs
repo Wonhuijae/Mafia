@@ -11,7 +11,7 @@ public class ChatManager : MonoBehaviour
     public GameObject chatScroll;
     public TMP_InputField chatInput;
 
-    private PhotonView pv;
+    protected PhotonView pv;
 
     private void Awake()
     {
@@ -19,28 +19,26 @@ public class ChatManager : MonoBehaviour
     }
 
     // 채팅 전송
-    public void SendChat(string input)
+    public virtual void SendChat(string input)
     {
         string chat = chatInput.text;
         if (string.IsNullOrEmpty(chat)) return;
+
         pv.RPC("UpdateChat", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, chat);
         chatInput.text = "";
     }
 
     // 채팅창 업데이트
     [PunRPC]
-    void UpdateChat(string name, string str)
+    protected virtual void UpdateChat(string name, string str)
     {
         GameObject msgObj = Instantiate(chat);
         msgObj.transform.SetParent(chatScroll.transform, false);
 
         TextMeshProUGUI msg = msgObj.GetComponent<TextMeshProUGUI>();
 
-        if (PhotonNetwork.LocalPlayer.NickName == name)
-        {
-            msg.alignment = TextAlignmentOptions.Right;
-        }
-
         msg.text = name + " " + str;
     }
+
+    protected virtual void UpdateChat(string name, string str, float[] color) { }
 }

@@ -26,6 +26,8 @@ MonoBehaviour:
     m_path: Assets/01. Scenes/WaitingRoom.unity
   - m_enabled: 1
     m_path: Assets/01. Scenes/GameLevel0.unity
+  - m_enabled: 1
+    m_path: Assets/01. Scenes/MeetingRoom.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings:

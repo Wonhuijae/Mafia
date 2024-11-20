@@ -2,17 +2,36 @@ using Photon.Pun;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameUISetting : MonoBehaviour
 {
+    public static event Action OnReport;
+    public static event Action OnConvene;
+
     public TextMeshProUGUI rollText;
     public Button killButton;
+    public Button ReportButton;
+    public Button ConveneButton;
+
+    PhotonView pv;
 
     private void Awake()
     {
         PlayerInitializer.onSetPlayer += SetRollText;
         MafiaPlayer.OnSetMafia += SetupMafiaUI;
+        pv = GetComponent<PhotonView>();
+
+        ConveneButton.onClick.RemoveAllListeners();
+        ConveneButton.onClick.AddListener(()=>
+        { 
+            if(PhotonNetwork.LocalPlayer.IsMasterClient) MeetingSceneLoad();
+            else
+            {
+                pv.RPC("MeetingSceneLoad", RpcTarget.MasterClient);
+            }
+        });
     }
 
     void SetRollText(string t)
@@ -29,5 +48,11 @@ public class GameUISetting : MonoBehaviour
         {
             mafiaPlayer.Kill();
         });
+    }
+
+    [PunRPC]
+    public void MeetingSceneLoad()
+    {
+        OnConvene();
     }
 }

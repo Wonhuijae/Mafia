@@ -26,18 +26,34 @@ public class GamePlayer : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         SceneManager.activeSceneChanged += RePose;
+        if (pv.IsMine)
+        {
+            GameUISetting.OnReport += Report;
+            GameUISetting.OnConvene += Convene;
+
+            Debug.Log("Listener Set");
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (pv.IsMine)
+        {
+            GameUISetting.OnReport -= Report;
+            GameUISetting.OnConvene -= Convene;
+        }
     }
 
     // 시체 신고
     public void Report()
     {
-
+        PhotonNetwork.LoadLevel("MeetingRoom");
     }
 
     // 회의 소집
-    public void convene()
+    public void Convene()
     {
-
+        PhotonNetwork.LoadLevel("MeetingRoom");
     }
 
     public virtual void Die()
