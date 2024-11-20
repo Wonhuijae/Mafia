@@ -55,7 +55,6 @@ public class GamePlayer : MonoBehaviour
     }
 
     // 시체 스폰
-    [PunRPC]
     public void RPC_SpawnCorpse()
     {
         if(this is CrewPlayer crew)

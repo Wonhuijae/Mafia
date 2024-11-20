@@ -22,7 +22,6 @@ public class GameUISetting : MonoBehaviour
 
     private void SetupMafiaUI(MafiaPlayer mafiaPlayer)
     {
-        Debug.Log("SetMafiaUI");
         killButton.gameObject.SetActive(true);
 
         killButton.onClick.RemoveAllListeners();

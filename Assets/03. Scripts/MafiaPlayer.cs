@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class MafiaPlayer : GamePlayer, IMafia
 
     void Start()
     {
-        OnSetMafia(this);
+        if (pv.IsMine) OnSetMafia(this);
     }
 
     public void CloseGate()
@@ -18,7 +19,6 @@ public class MafiaPlayer : GamePlayer, IMafia
 
     public void Kill()
     {
-        Debug.Log("Kill");
         Collider[] colls = Physics.OverlapSphere(transform.position, 1f);
         foreach (var coll in colls)
         {

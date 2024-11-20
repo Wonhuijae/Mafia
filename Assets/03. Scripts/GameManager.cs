@@ -98,8 +98,6 @@ public class GameManager : MonoBehaviour
             }
 
             player.SetCustomProperties(roleSet);  // 프로퍼티 설정
-
-            Debug.Log($"Player {player.NickName} is a {player.CustomProperties["Role"].ToString()}.");
         }
     }
 

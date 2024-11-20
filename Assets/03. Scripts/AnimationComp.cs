@@ -1,8 +1,9 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class AnimationComp : MonoBehaviour
 {
-    public void OnDieEnd()
+   public void OnDieEnd()
     {
         GetComponent<Animator>().enabled = false;
 

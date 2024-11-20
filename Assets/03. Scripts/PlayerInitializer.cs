@@ -26,7 +26,6 @@ public class PlayerInitializer : MonoBehaviourPunCallbacks
         if (changedProps.ContainsKey("Role"))
         {
             string playerRole = changedProps["Role"].ToString();
-            Debug.Log(targetPlayer.NickName + " : " + targetPlayer.CustomProperties["Role"]);
 
             GameObject playerObj = targetPlayer.TagObject as GameObject;
 

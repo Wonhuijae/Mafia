@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,29 +9,35 @@ public class CrewPlayer : GamePlayer, ICrew
     {
         throw new System.NotImplementedException();
     }
-
+    
     public void CrewDie()
     {
-        Die();
+        pv.RPC("Die", RpcTarget.All);
     }
 
+    [PunRPC]
     public override void Die()
     {
-        instance.CrewDie(model);
-
-        pv.RPC("RPC_SpawnCorpse", RpcTarget.All);
         base.Die();
-        Invoke("Ghost", 3f);
+        instance.CrewDie(model);
+        StartCoroutine(WaitForGhost());
+        RPC_SpawnCorpse();
+    }
+
+
+    IEnumerator WaitForGhost()
+    {
+        yield return new WaitForSeconds(3f);
+        Ghost();
     }
 
     // 관전(유령 모드)
     void Ghost()
     {
-        Debug.Log("Ghost");
         characterController.enabled = true;
         playerMove.enabled = true;
 
-        playerMove.SetCameraTarget();
+        if (pv.IsMine) playerMove.SetCameraTarget();
     }
 
     // 시체 생성
@@ -41,6 +48,7 @@ public class CrewPlayer : GamePlayer, ICrew
 
         // 타겟을 시체로 설정해 넘어지는 효과
         playerMove.SetCameraTarget(c);
+        model.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
         model.SetActive(false);
 
         // 시체 애니메이터 준비

@@ -61,7 +61,7 @@ public class PlayerMove : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (animator == null) animator = GetComponentInChildren<Animator>();
         if (cineCam == null) SetCameraTarget(playerModel);
@@ -101,14 +101,12 @@ public class PlayerMove : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
 
     public void SetCameraTarget()
     {
-        Debug.Log("SetCam");
         SetCameraTarget(cameraPos);
     }
 
     public void SetCameraTarget(GameObject _target)
     {
         cameraTarget = _target;
-
         // 플레이어 카메라 설정
         if (myPhotonView.IsMine)
         {
@@ -119,25 +117,13 @@ public class PlayerMove : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallbac
             cineCam.Follow = cameraTarget.transform;
             cineCam.LookAt = cameraTarget.transform;
         }
-        else
-        {
-            // 다른 플레이어의 카메라는 설정하지 않음 (자동으로 다른 플레이어의 카메라를 사용)
-            if (cineCam != null) Destroy(cineCam.gameObject); // 다른 플레이어의 카메라는 없애버림
-        }
     }
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        Debug.Log($"OnPhotonInstantiate - Sender: {info.Sender.NickName}, ActorNumber: {info.Sender.ActorNumber}");
-
         if (info.Sender != null)
         {
             info.Sender.TagObject = this.gameObject;
-            Debug.Log($"TagObject set for player {info.Sender.NickName}");
-        }
-        else
-        {
-            Debug.LogError("Sender is null in OnPhotonInstantiate");
         }
     }
 }

@@ -69,6 +69,5 @@ public class VoiceManager : MonoBehaviour
     void DetectVoice()
     {
         detectMicInput.SetActive(!detectMicInput.activeInHierarchy);
-        Debug.Log(detectMicInput.activeInHierarchy);
     }
 }
