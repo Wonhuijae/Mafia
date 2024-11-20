@@ -20,6 +20,12 @@ public class GameManager : MonoBehaviour
 
     List<GameObject> corpse = new();
 
+    List<string> players = new();
+    List<string> livePlayers = new();
+    List<string> deadPlayers = new();
+
+    bool bIsGameRun = false;
+
     private static GameManager m_instance;
     public static GameManager Instance
     {
@@ -63,6 +69,8 @@ public class GameManager : MonoBehaviour
         {
             PhotonNetwork.LoadLevel("GameLevel" + gameIdx);
             AssignMafiaRoles();
+            bIsGameRun = true;
+            ListInitialize();
         }
     }
 
@@ -109,5 +117,53 @@ public class GameManager : MonoBehaviour
     public void CrewDie(GameObject c)
     {
         corpse.Add(c);
+    }
+
+    void ListInitialize()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            players.Clear();
+            livePlayers.Clear();
+            foreach (var p in PhotonNetwork.PlayerList)
+            {
+                players.Add(p.NickName);
+            }
+
+            livePlayers = players;
+            
+            // 동기화
+            pv.RPC("UpdateLivePlayers", RpcTarget.Others, livePlayers.ToArray());
+        }
+    }
+
+    [PunRPC]
+    void UpdateLivePlayers(string[] playerNames)
+    {
+        players = new List<string>(playerNames);
+        livePlayers = players;
+    }
+
+    public void PlayerDie(string nickName)
+    {
+        deadPlayers.Add(nickName);
+        livePlayers.Remove(nickName);
+    }
+
+    public bool IsDead(string nickName)
+    {
+        return deadPlayers.Contains(nickName);
+    }
+
+    public Dictionary<string, bool> SetVoteList()
+    {
+        Dictionary<string, bool> dicts = new();
+        foreach(var p in players)
+        {
+            if (deadPlayers.Contains(p)) dicts.Add(p, true);
+            else dicts.Add(p, false);
+        }
+
+        return dicts;
     }
 }
