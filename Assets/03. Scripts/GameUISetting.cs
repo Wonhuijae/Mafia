@@ -23,6 +23,18 @@ public class GameUISetting : MonoBehaviour
         MafiaPlayer.OnSetMafia += SetupMafiaUI;
         pv = GetComponent<PhotonView>();
 
+        // 시체 보고 버튼
+        ReportButton.onClick.RemoveAllListeners();
+        ReportButton.onClick.AddListener(() =>
+        {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient) MeetingSceneLoad();
+            else
+            {
+                pv.RPC("ReportSceneLoad", RpcTarget.MasterClient);
+            }
+        });
+
+        // 긴급회의 버튼
         ConveneButton.onClick.RemoveAllListeners();
         ConveneButton.onClick.AddListener(()=>
         { 
@@ -52,6 +64,12 @@ public class GameUISetting : MonoBehaviour
 
     [PunRPC]
     public void MeetingSceneLoad()
+    {
+        OnConvene();
+    }
+
+    [PunRPC]
+    public void ReportSceneLoad()
     {
         OnConvene();
     }
