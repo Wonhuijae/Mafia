@@ -38,7 +38,7 @@ public class VoteManager : MonoBehaviour
 
         time += Time.deltaTime;
 
-        // 시간 종료되면 이벤트 호출
+        // 투표 시간 종료되면 이벤트 호출
         if (time >= 5f) 
         {
             OnVoteTimeOut();
@@ -48,6 +48,8 @@ public class VoteManager : MonoBehaviour
         }
     }
 
+    // 투표 후보자 리스트 설정
+    // 스크롤뷰 버튼
     void SetVoteList()
     {
         // 마스터 클라이언트에서만 설정하고 이외 클라이언트는 마스터에 동기화
