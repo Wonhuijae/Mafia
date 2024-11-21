@@ -4,16 +4,25 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Photon.Realtime;
+using System;
 
 public class VoteManager : MonoBehaviour
 {
     Dictionary<string, bool> IsDeads = new();
     Dictionary<string, Color> colors = new();
+    Dictionary<string, int> voteResult = new();
 
     GameManager gameManager;
     PhotonView pv;
 
+    static string votePlayer;
+
     public GameObject[] voteItems;
+
+    public static event Action OnVoteTimeOut;
+
+    float time = 0f;
+    bool isTimeOut = false;
 
     private void Awake()
     {
@@ -23,8 +32,25 @@ public class VoteManager : MonoBehaviour
         SetVoteList();
     }
 
+    void Update()
+    {
+        if (isTimeOut) return;
+
+        time += Time.deltaTime;
+
+        // 시간 종료되면 이벤트 호출
+        if (time >= 5f) 
+        {
+            OnVoteTimeOut();
+            TimeOut();
+            time = 0;
+            isTimeOut = true;
+        }
+    }
+
     void SetVoteList()
     {
+        // 마스터 클라이언트에서만 설정하고 이외 클라이언트는 마스터에 동기화
         if(PhotonNetwork.IsMasterClient)
         {
             IsDeads = gameManager.SetVoteList();
@@ -62,9 +88,93 @@ public class VoteManager : MonoBehaviour
             idx++;
         }
 
-        for(; idx< 8; idx++)
+        for (; idx < 8; idx++) 
         {
             voteItems[idx].SetActive(false);
+        }
+    }
+
+    // 투표 결과 저장
+    public static void GetVoteData(string name)
+    {
+        votePlayer = name;
+    }
+
+    // 투표 결과 취합(마스터)
+    void TimeOut()
+    {
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            ResultAdd(votePlayer);
+
+            Invoke("DisplayResults", 3f);
+        }
+        else
+        {
+            pv.RPC("ResultAdd", RpcTarget.MasterClient, votePlayer);
+        }
+    }
+
+    [PunRPC]
+    // 딕셔너리에 투표 결과 저장
+    void ResultAdd(string name)
+    {
+        if(voteResult.ContainsKey(name))
+        {
+            voteResult[name]++;
+        }
+        else
+        {
+            voteResult.Add(name, 1);
+        }
+    }
+
+    // 투표 결과
+    void DisplayResults()
+    {
+        List<string> playerNames = new List<string>();
+        List<int> playerVotes = new List<int>();
+
+        foreach (GameObject o in voteItems)
+        {
+            if (!o.activeInHierarchy) continue;
+
+            VotingItem v = o.GetComponent<VotingItem>();
+            if (v.IsDead()) continue;
+
+            string itemName = v.GetPlayerName();
+
+            if (voteResult.ContainsKey(itemName))
+            {
+                int itemVote = voteResult[itemName];
+                v.DisplayVoteResult(itemName, itemVote);
+
+                playerNames.Add(itemName);
+                playerVotes.Add(voteResult[itemName]);
+            }
+        }
+
+        pv.RPC("SyncVoteResults", RpcTarget.Others, playerNames.ToArray(), playerVotes.ToArray());
+    }
+
+    // 마스터와 동기화
+    [PunRPC]
+    void SyncVoteResults(string[] playerNames, int[] playerVotes)
+    {
+        for (int i = 0; i < playerNames.Length; i++)
+        {
+            foreach (GameObject o in voteItems)
+            {
+                if (!o.activeInHierarchy) continue;
+
+                VotingItem v = o.GetComponent<VotingItem>();
+                if (v.IsDead()) continue;
+
+                if (v.GetPlayerName() == playerNames[i])
+                {
+                    v.DisplayVoteResult(playerNames[i], playerVotes[i]);
+                }
+            }
         }
     }
 }

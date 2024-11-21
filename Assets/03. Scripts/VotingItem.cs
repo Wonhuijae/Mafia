@@ -1,3 +1,4 @@
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,6 +39,8 @@ public class VotingItem : MonoBehaviour
     private void Awake()
     {
         gameManager = GameManager.Instance;
+
+        VoteManager.OnVoteTimeOut += TimeOut;
     }
 
     public void SetData(VotePlayer v)
@@ -65,6 +68,30 @@ public class VotingItem : MonoBehaviour
 
     void TimeOut()
     {
+        // 이벤트 발생 시 투표 결과를 매니저에 전송
+        if (userSelect == select)
+        {
+            VoteManager.GetVoteData(votePlayer.nickName);
+        }
+    }
 
+    public void DisplayVoteResult(string name, int votes)
+    {
+        Debug.Log(votes);
+        for (int i = 0; i < votes; i++) 
+        {
+            elections[i].SetActive(true);
+        }
+    }
+
+    public string GetPlayerName()
+    {
+        Debug.Log(votePlayer == null);
+        return votePlayer.nickName;
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
     }
 }
