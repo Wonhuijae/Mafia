@@ -9,7 +9,7 @@ using System;
 /*
 * 마피아 투표 기능을 담당하는 VoteManager 클래스
 * 해당 기능은 아래 링크에서 미리 볼 수 있습니다.
-* https://github.com/Wonhuijae/Mafia/blob/main/Assets/03.%20Scripts/Vote/VoteGif.md
+* https://github.com/Wonhuijae/Mafia/blob/main/VoteGif.md
 */
 
 public class VoteManager : MonoBehaviour
