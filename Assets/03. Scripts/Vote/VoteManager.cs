@@ -17,11 +17,14 @@ public class VoteManager : MonoBehaviour
 
     static string votePlayer;
 
+    const int maxPlayer = 8;
+    const float voteTimeLimit = 5f;
+    float time = 0f;
+
     public GameObject[] voteItems;
 
     public static event Action OnVoteTimeOut;
 
-    float time = 0f;
     bool isTimeOut = false;
 
     private void Awake()
@@ -39,7 +42,7 @@ public class VoteManager : MonoBehaviour
         time += Time.deltaTime;
 
         // 투표 시간 종료되면 이벤트 호출
-        if (time >= 5f) 
+        if (time >= voteTimeLimit) 
         {
             OnVoteTimeOut();
             TimeOut();
@@ -71,7 +74,7 @@ public class VoteManager : MonoBehaviour
 
     void SetVoteView()
     {
-        VotePlayer[] vs = new VotePlayer[8];
+        VotePlayer[] vs = new VotePlayer[maxPlayer];
         int idx = 0;
 
         // 투표 리스트 구성
