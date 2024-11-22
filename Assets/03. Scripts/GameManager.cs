@@ -166,4 +166,9 @@ public class GameManager : MonoBehaviour
 
         return dicts;
     }
+
+    public int GetCrewPlayerNumber()
+    {
+        return PhotonNetwork.CurrentRoom.PlayerCount - mafiaNum;
+    }
 }
