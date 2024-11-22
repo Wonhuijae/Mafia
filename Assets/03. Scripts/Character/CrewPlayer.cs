@@ -1,13 +1,22 @@
 using Photon.Pun;
+using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CrewPlayer : GamePlayer, ICrew
 {
+    // 미션 부여할 이벤트
+    public static event Action OnMissonStarted;
+
+    void Start()
+    {
+        Misson();
+    }
+
+    // 미션 부여
     public void Misson()
     {
-        throw new System.NotImplementedException();
+        if (pv.IsMine) OnMissonStarted();
     }
     
     public void CrewDie()

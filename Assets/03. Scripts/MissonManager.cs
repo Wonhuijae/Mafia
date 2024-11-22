@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,18 +14,35 @@ public class MissonManager : MonoBehaviour
     const int missonCount = 5;
     int missonPlayer;
 
-    // 미션 1개 완료했을 때 증가할 비율
-    float missonGage;
+    // 총 미션 완료 개수
+    int missonGage = 0;
+
+    private static MissonManager m_instance;
+    public static MissonManager Instance
+    {
+        get
+        {
+            if (m_instance == null)
+            {
+                m_instance = FindAnyObjectByType<MissonManager>();
+            }
+            return m_instance;
+        }
+    }
 
     private void Awake()
     {
+        if (Instance != this) 
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+
         pv = GetComponent<PhotonView>();
 
         missonPlayer = GameManager.Instance.GetCrewPlayerNumber();
-        missonGage = 1 / (float)(missonPlayer * 5);
 
-        Debug.Log("missonPlayer: " + missonPlayer);
-        Debug.Log("missonGage: " + missonGage);
+        if (pv.IsMine) CrewPlayer.OnMissonStarted += MissonStart;
     }
 
     public void RPC_MissonClear()
@@ -36,7 +54,12 @@ public class MissonManager : MonoBehaviour
     [PunRPC]
     void MissonClear()
     {
-        Debug.Log(missonSlider.value);
-        missonSlider.value += missonGage;
+        missonGage++;
+        missonSlider.value = (float)missonGage / (missonCount * missonPlayer);
+    }
+
+    void MissonStart()
+    {
+        // 미션 골라서 부여
     }
 }
