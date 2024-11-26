@@ -65,6 +65,8 @@ public class VoteManager : MonoBehaviour
         if(PhotonNetwork.IsMasterClient)
         {
             IsDeads = gameManager.SetVoteList();
+
+            // 딕셔너리를 Json으로 변환
             string dictToJson = JsonConvert.SerializeObject(IsDeads);
             pv.RPC("SyncVoteList", RpcTarget.Others, dictToJson);
             SetVoteView();
@@ -74,6 +76,7 @@ public class VoteManager : MonoBehaviour
     [PunRPC]
     void SyncVoteList(string dictToJson)
     {
+         // Json을 딕셔너리로 변환
         IsDeads = JsonConvert.DeserializeObject<Dictionary<string, bool>>(dictToJson);
         SetVoteView();
     }
@@ -140,7 +143,7 @@ public class VoteManager : MonoBehaviour
         }
     }
 
-    // 투표 결과
+    // 투표 결과 UI에 반영
     void DisplayResults()
     {
         List<string> playerNames = new List<string>();

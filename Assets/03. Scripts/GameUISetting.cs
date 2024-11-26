@@ -1,4 +1,4 @@
-using Photon.Pun;
+ï»¿using Photon.Pun;
 using System;
 using TMPro;
 using UnityEngine;
@@ -21,9 +21,11 @@ public class GameUISetting : MonoBehaviour
     {
         PlayerInitializer.onSetPlayer += SetRollText;
         MafiaPlayer.OnSetMafia += SetupMafiaUI;
+        GamePlayer.OnCorpsewnColl += CorpsewnColl;
+
         pv = GetComponent<PhotonView>();
 
-        // ½ÃÃ¼ º¸°í ¹öÆ°
+        // ì‹œì²´ ë³´ê³  ë²„íŠ¼
         ReportButton.onClick.RemoveAllListeners();
         ReportButton.onClick.AddListener(() =>
         {
@@ -34,7 +36,7 @@ public class GameUISetting : MonoBehaviour
             }
         });
 
-        // ±ä±ÞÈ¸ÀÇ ¹öÆ°
+        // ê¸´ê¸‰íšŒì˜ ë²„íŠ¼
         ConveneButton.onClick.RemoveAllListeners();
         ConveneButton.onClick.AddListener(()=>
         { 
@@ -46,9 +48,21 @@ public class GameUISetting : MonoBehaviour
         });
     }
 
+    private void OnDisable()
+    {
+        PlayerInitializer.onSetPlayer -= SetRollText;
+        MafiaPlayer.OnSetMafia -= SetupMafiaUI;
+        GamePlayer.OnCorpsewnColl -= CorpsewnColl;
+    }
+
     void SetRollText(string t)
     {
         rollText.text = t;
+    }
+
+    void CorpsewnColl()
+    {
+        ReportButton.gameObject.SetActive(!ReportButton.gameObject.activeInHierarchy);
     }
 
     private void SetupMafiaUI(MafiaPlayer mafiaPlayer)

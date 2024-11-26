@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GamePlayer : MonoBehaviour
 {
+    public static event Action OnCorpsewnColl;
+
     string playerName;
     static float misson;
 
@@ -76,6 +79,30 @@ public class GamePlayer : MonoBehaviour
         if(this is CrewPlayer crew)
         {
             crew.SpawnCorpsewn();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!pv.IsMine ||  isDie) return;
+
+        BoxCollider b = other as BoxCollider;
+
+        if (b != null && b.GetComponentInParent<AnimationComp>() != null)
+        {
+            OnCorpsewnColl();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!pv.IsMine || isDie) return;
+
+        BoxCollider b = other as BoxCollider;
+
+        if (b != null && b.GetComponentInParent<AnimationComp>() != null)
+        {
+            OnCorpsewnColl();
         }
     }
 }

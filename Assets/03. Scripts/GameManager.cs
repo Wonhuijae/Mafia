@@ -144,6 +144,7 @@ public class GameManager : MonoBehaviour
         livePlayers = players;
     }
 
+    // 플레이어 죽음 처리
     public void PlayerDie(string nickName)
     {
         deadPlayers.Add(nickName);
